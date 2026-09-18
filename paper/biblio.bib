@@ -1,0 +1,498 @@
+@article{chang2020double,
+  title={Double/debiased machine learning for difference-in-differences models},
+  author={Chang, Neng-Chieh},
+  journal={The Econometrics Journal},
+  volume={23},
+  number={2},
+  pages={177--191},
+  year={2020},
+  publisher={Oxford University Press},
+  doi={10.1093/ectj/utaa001}
+}
+
+@article{chiang2022multiway,
+  title={Multiway cluster robust double/debiased machine learning},
+  author={Chiang, Harold D. and Kato, Kengo and Ma, Yukun and Sasaki, Yuya},
+  journal={Journal of Business \& Economic Statistics},
+  volume={40},
+  number={3},
+  pages={1046--1056},
+  year={2022},
+  publisher={Taylor \& Francis},
+  doi={10.1080/07350015.2021.1895815}
+}
+
+@article{hansen2019clustered,
+  title={Asymptotic properties of a robust variance matrix estimator for panel data when {$T$} is large},
+  author={Hansen, Christian B. and Liao, Yuan},
+  journal={Journal of Econometrics},
+  volume={210},
+  number={1},
+  pages={86--108},
+  year={2019},
+  publisher={Elsevier}
+}
+
+@misc{clivio2024dml,
+  title={Double Machine Learning meets Panel Data --- Promises, Pitfalls, and Potential Solutions},
+  author={Clivio, Oscar and Lewis, Greg and Nie, Xinkun and Wager, Stefan},
+  year={2024},
+  howpublished={arXiv:2409.01266},
+  note={arXiv preprint}
+}
+
+@article{cameron2015practitioners,
+  title={A practitioner's guide to cluster-robust inference},
+  author={Cameron, A. Colin and Miller, Douglas L.},
+  journal={Journal of Human Resources},
+  volume={50},
+  number={2},
+  pages={317--372},
+  year={2015},
+  publisher={University of Wisconsin Press}
+}
+
+@article{abadie2005semiparametric,
+  title={Semiparametric difference-in-differences estimators},
+  author={Abadie, Alberto},
+  journal={The review of economic studies},
+  volume={72},
+  number={1},
+  pages={1--19},
+  year={2005},
+  publisher={Wiley-Blackwell}
+}
+
+@article{newey1994asymptotic,
+  title={The asymptotic variance of semiparametric estimators},
+  author={Newey, Whitney K},
+  journal={Econometrica},
+  volume={62},
+  number={6},
+  pages={1349--1382},
+  year={1994},
+  doi={10.2307/2951752}
+}
+
+@article{ichimura2022influence,
+  title={The influence function of semiparametric estimators},
+  author={Ichimura, Hidehiko and Newey, Whitney K},
+  journal={Quantitative Economics},
+  volume={13},
+  number={1},
+  pages={29--61},
+  year={2022},
+  doi={10.3982/QE826}
+}
+
+@article{CNS2022,
+author = {Chernozhukov, Victor and Newey, Whitney K. and Singh, Rahul},
+title = {Automatic Debiased Machine Learning of Causal and Structural Effects},
+journal = {Econometrica},
+volume = {90},
+number = {3},
+pages = {967-1027},
+keywords = {Debiased machine learning, causal parameters, structural parameters, regression effects, Lasso, Riesz representation},
+doi = {https://doi.org/10.3982/ECTA18515},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA18515},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.3982/ECTA18515},
+abstract = {Many causal and structural effects depend on regressions. Examples include policy effects, average derivatives, regression decompositions, average treatment effects, causal mediation, and parameters of economic structural models. The regressions may be high-dimensional, making machine learning useful. Plugging machine learners into identifying equations can lead to poor inference due to bias from regularization and/or model selection. This paper gives automatic debiasing for linear and nonlinear functions of regressions. The debiasing is automatic in using Lasso and the function of interest without the full form of the bias correction. The debiasing can be applied to any regression learner, including neural nets, random forests, Lasso, boosting, and other high-dimensional methods. In addition to providing the bias correction, we give standard errors that are robust to misspecification, convergence rates for the bias correction, and primitive conditions for asymptotic inference for estimators of a variety of estimators of structural and causal effects. The automatic debiased machine learning is used to estimate the average treatment effect on the treated for the NSW job training data and to estimate demand elasticities from Nielsen scanner data while allowing preferences to be correlated with prices and income.},
+year = {2022}
+}
+
+@article{DDML2018,
+    author = {Chernozhukov, Victor and Chetverikov, Denis and Demirer, Mert and Duflo, Esther and Hansen, Christian and Newey, Whitney and Robins, James},
+    title = "{Double/debiased machine learning for treatment and structural parameters}",
+    journal = {The Econometrics Journal},
+    volume = {21},
+    number = {1},
+    pages = {C1-C68},
+    year = {2018},
+    month = {01},
+    abstract = "{We revisit the classic semi‐parametric problem of inference on a low‐dimensional parameter θ0 in the presence of high‐dimensional nuisance parameters η0. We depart from the classical setting by allowing for η0 to be so high‐dimensional that the traditional assumptions (e.g. Donsker properties) that limit complexity of the parameter space for this object break down. To estimate η0, we consider the use of statistical or machine learning (ML) methods, which are particularly well suited to estimation in modern, very high‐dimensional cases. ML methods perform well by employing regularization to reduce variance and trading off regularization bias with overfitting in practice. However, both regularization bias and overfitting in estimating η0 cause a heavy bias in estimators of θ0 that are obtained by naively plugging ML estimators of η0 into estimating equations for θ0. This bias results in the naive estimator failing to be N−1/2 consistent, where N is the sample size. We show that the impact of regularization bias and overfitting on estimation of the parameter of interest θ0 can be removed by using two simple, yet critical, ingredients: (1) using Neyman‐orthogonal moments/scores that have reduced sensitivity with respect to nuisance parameters to estimate θ0; (2) making use of cross‐fitting, which provides an efficient form of data‐splitting. We call the resulting set of methods double or debiased ML (DML). We verify that DML delivers point estimators that concentrate in an N−1/2‐neighbourhood of the true parameter values and are approximately unbiased and normally distributed, which allows construction of valid confidence statements. The generic statistical theory of DML is elementary and simultaneously relies on only weak theoretical requirements, which will admit the use of a broad array of modern ML methods for estimating the nuisance parameters, such as random forests, lasso, ridge, deep neural nets, boosted trees, and various hybrids and ensembles of these methods. We illustrate the general theory by applying it to provide theoretical properties of the following: DML applied to learn the main regression parameter in a partially linear regression model; DML applied to learn the coefficient on an endogenous variable in a partially linear instrumental variables model; DML applied to learn the average treatment effect and the average treatment effect on the treated under unconfoundedness; DML applied to learn the local average treatment effect in an instrumental variables setting. In addition to these theoretical applications, we also illustrate the use of DML in three empirical examples.}",
+    issn = {1368-4221},
+    doi = {10.1111/ectj.12097},
+    url = {https://doi.org/10.1111/ectj.12097},
+    eprint = {https://academic.oup.com/ectj/article-pdf/21/1/C1/27684918/ectj00c1.pdf},
+}
+
+@article{hahn1998,
+ ISSN = {00129682, 14680262},
+ URL = {http://www.jstor.org/stable/2998560},
+ abstract = {In this paper, the role of the propensity score in the efficient estimation of average treatment effects is examined. Under the assumption that the treatment is ignorable given some observed characteristics, it is shown that the propensity score is ancillary for estimation of the average treatment effects. The propensity score is not ancillary for estimation of average treatment effects on the treated. It is suggested that the marginal value of the propensity score lies entirely in the "dimension reduction." Efficient semiparametric estimators of average treatment effects and average treatment effects on the treated are shown to take the form of relevant sample averages of the data completed by the nonparametric imputation method. It is shown that the projection on the propensity score is not necessary for efficient semiparametric estimation of average treatment effects on the treated even if the propensity score is known. An application to the experimental data reveals that conditioning on the propensity score may even result in a loss of efficiency.},
+ author = {Jinyong Hahn},
+ journal = {Econometrica},
+ number = {2},
+ pages = {315--331},
+ publisher = {[Wiley, Econometric Society]},
+ title = {On the Role of the Propensity Score in Efficient Semiparametric Estimation of Average Treatment Effects},
+ urldate = {2023-02-12},
+ volume = {66},
+ year = {1998},
+ doi = {10.2307/2998560}
+}
+
+
+
+@article{fuzzy2018,
+    author = {de Chaisemartin, Cl{\'e}ment and D'Haultf{\oe}uille, Xavier},
+    title = "{Fuzzy Differences-in-Differences}",
+    journal = {The Review of Economic Studies},
+    volume = {85},
+    number = {2},
+    pages = {999-1028},
+    year = {2018},
+    month = {08},
+    abstract = "{Difference-in-differences (DID) is a method to evaluate the effect of a treatment. In its basic version, a “control group” is untreated at two dates, whereas a “treatment group” becomes fully treated at the second date. However, in many applications of the DID method, the treatment rate only increases more in the treatment group. In such fuzzy designs, a popular estimator of the treatment effect is the DID of the outcome divided by the DID of the treatment. We show that this ratio identifies a local average treatment effect only if the effect of the treatment is stable over time, and if the effect of the treatment is the same in the treatment and in the control group. We then propose two alternative estimands that do not rely on any assumption on treatment effects, and that can be used when the treatment rate does not change over time in the control group. We prove that the corresponding estimators are asymptotically normal. Finally, we use our results to reassess the returns to schooling in Indonesia.}",
+    issn = {0034-6527},
+    doi = {10.1093/restud/rdx049},
+    url = {https://doi.org/10.1093/restud/rdx049},
+    eprint = {https://academic.oup.com/restud/article-pdf/85/2/999/24473453/rdx049.pdf},
+}
+
+@article{noack2019bias,
+  title={Bias-aware inference in fuzzy regression discontinuity designs},
+  author={Noack, Claudia and Rothe, Christoph},
+  journal={arXiv preprint arXiv:1906.04631},
+  year={2019}
+}
+
+@article{chernozhukov2022locally,
+  title={Locally robust semiparametric estimation},
+  author={Chernozhukov, Victor and Escanciano, Juan Carlos and Ichimura, Hidehiko and Newey, Whitney K and Robins, James M},
+  journal={Econometrica},
+  volume={90},
+  number={4},
+  pages={1501--1535},
+  year={2022},
+  publisher={Wiley Online Library}
+}
+
+@article{hampel1974influence,
+  title={The influence curve and its role in robust estimation},
+  author={Hampel, Frank R},
+  journal={Journal of the american statistical association},
+  volume={69},
+  number={346},
+  pages={383--393},
+  year={1974},
+  publisher={Taylor \& Francis}
+}
+
+@book{vaart2000asymptotic,
+  title={Asymptotic Statistics},
+  author={van der Vaart, Aad},
+  year={2000},
+  publisher={Cambridge University Press},
+  address={Cambridge, UK}
+}
+
+
+@article{robins2001,
+  title={Comment on the Bickel and Kwon article, ``Inference for semiparametric models: some questions and an answer''},
+  author={Robins, J. M. and Rotnitzky, A.},
+  journal={Statistica Sinica},
+  volume={11},
+  number={4},
+  pages={920--936},
+  year={2001},
+  note={MR1867326}
+}
+
+@book{vanderLaan2003,
+  title={Unified Methods for Censored Longitudinal Data and Causality},
+  author={van der Laan, M. J. and Robins, J. M.},
+  publisher={Springer},
+  address={New York},
+  year={2003},
+  note={MR1958123}
+}
+
+@article{hansen1982large,
+  title={Large Sample Properties of Generalized Method of Moments Estimators},
+  author={Hansen, Lars Peter},
+  journal={Econometrica},
+  volume={50},
+  number={4},
+  pages={1029--1054},
+  year={1982},
+  doi={10.2307/1912775}
+}
+@incollection{newey1994large,
+  title={Large sample estimation and hypothesis testing},
+  author={Newey, Whitney K. and McFadden, Daniel},
+  booktitle={Handbook of Econometrics},
+  volume={4},
+  pages={2111--2245},
+  year={1994},
+  publisher={Elsevier}
+}
+@article{chamberlain1987,
+title = {Asymptotic efficiency in estimation with conditional moment restrictions},
+journal = {Journal of Econometrics},
+volume = {34},
+number = {3},
+pages = {305-334},
+year = {1987},
+issn = {0304-4076},
+doi = {https://doi.org/10.1016/0304-4076(87)90015-7},
+url = {https://www.sciencedirect.com/science/article/pii/0304407687900157},
+author = {Gary Chamberlain},
+abstract = {In this paper, bounds on asymptotic efficiency are derived for a class of non-parametric models. The data are independent and identically distributed according to some unknown distribution F. There is a given function of the data and a parameter. The restrictions are that a conditional expectation of this function is zero at some point in the parameter space; this point is to be estimated. If F is assumed to be a multinomial distribution with known (finite) support, then the problem becomes parametric and the bound can be obtained from the information matrix. This bound turns out to depend only upon certain conditional moments, and not upon the support of the distribution. Since a general F can be approximated by a multinomial distribution, the multinomial bound applies to the general case.}
+}
+
+@article{de2020two,
+  title={Two-way fixed effects estimators with heterogeneous treatment effects},
+  author={De Chaisemartin, Cl{\'e}ment and d’Haultfoeuille, Xavier},
+  journal={American economic review},
+  volume={110},
+  number={9},
+  pages={2964--2996},
+  year={2020},
+  publisher={American Economic Association 2014 Broadway, Suite 305, Nashville, TN 37203}
+}
+
+@article{duflo2001schooling,
+  title={Schooling and labor market consequences of school construction in Indonesia: Evidence from an unusual policy experiment},
+  author={Duflo, Esther},
+  journal={American Economic Review},
+  volume={91},
+  number={4},
+  pages={795--813},
+  year={2001},
+  publisher={American Economic Association},
+  doi={10.1257/aer.91.4.795}
+}
+
+@article{duggan2010effect,
+  title={The effect of Medicare Part D on pharmaceutical prices and utilization},
+  author={Duggan, Mark and Morton, Fiona Scott},
+  journal={American Economic Review},
+  volume={100},
+  number={1},
+  pages={590--607},
+  year={2010},
+  publisher={American Economic Association}
+}
+
+@article{enikolopov2011media,
+  title={Media and political persuasion: Evidence from Russia},
+  author={Enikolopov, Ruben and Petrova, Maria and Zhuravskaya, Ekaterina},
+  journal={American economic review},
+  volume={101},
+  number={7},
+  pages={3253--3285},
+  year={2011},
+  publisher={American Economic Association}
+}
+
+@article{field2007entitled,
+  title={Entitled to work: Urban property rights and labor supply in Peru},
+  author={Field, Erica},
+  journal={The Quarterly Journal of Economics},
+  volume={122},
+  number={4},
+  pages={1561--1602},
+  year={2007},
+  publisher={MIT Press}
+}
+
+@article{cornelissen2018benefits,
+  title={Who benefits from universal child care? Estimating marginal returns to early child care attendance},
+  author={Cornelissen, Thomas and Dustmann, Christian and Raute, Anna and Sch{\"o}nberg, Uta},
+  journal={Journal of Political Economy},
+  volume={126},
+  number={6},
+  pages={2356--2409},
+  year={2018},
+  publisher={University of Chicago Press Chicago, IL}
+}
+
+@article{kennedy2023hidden,
+  title={Hidden schooling: endogenous measurement error and bias in education and labor market experience},
+  author={Kennedy, Kendall J},
+  journal={Journal of Population Economics},
+  volume={36},
+  number={4},
+  pages={2691--2723},
+  year={2023},
+  publisher={Springer}
+}
+
+@article{belloni2012sparse,
+  author    = {Alexandre Belloni and Denis Chetverikov and Victor Chernozhukov and Christian Hansen},
+  title     = {Sparse models and methods for optimal instruments with an application to eminent domain},
+  journal   = {Econometrica},
+  volume    = {80},
+  pages     = {2369--2429},
+  year      = {2012},
+}
+
+@article{belloni2017program,
+  author    = {Alexandre Belloni and Victor Chernozhukov and Ivan Fernández-Val and Christian Hansen},
+  title     = {Program evaluation and causal inference with high-dimensional data},
+  journal   = {Econometrica},
+  volume    = {85},
+  number    = {1},
+  pages     = {233--298},
+  year      = {2017},
+  doi       = {10.3982/ECTA12723}
+}
+
+@article{belloni2014inference,
+  author    = {Alexandre Belloni and Victor Chernozhukov and Christian Hansen},
+  title     = {Inference on treatment effects after selection among high-dimensional controls},
+  journal   = {Review of Economic Studies},
+  volume    = {81},
+  pages     = {608--650},
+  year      = {2014},
+}
+
+@article{escanciano2023automatic,
+  title={Automatic Locally Robust {GMM} with Machine-Learning-Generated Regressors},
+  author={Escanciano, Juan Carlos and P{\'e}rez-Izquierdo, Telmo},
+  journal={arXiv preprint arXiv:2301.10643},
+  year={2023}
+}
+@article{ye2023instrumented,
+  title={Instrumented Difference-in-Differences},
+  author={Ye, Ting and Ertefaie, Ashkan and Flory, James and Hennessy, Sean and Small, Dylan S.},
+  journal={Biometrics},
+  volume={79},
+  number={2},
+  pages={569--581},
+  year={2023},
+  publisher={Oxford University Press},
+  doi={10.1111/biom.13783}
+}
+
+@article{zhao2025semiparametric,
+  title={A Semiparametric Instrumented Difference-in-Differences Approach to Policy Learning},
+  author={Zhao, Pan and Cui, Yifan},
+  journal={Biometrika},
+  volume={112},
+  number={4},
+  eid={asaf043},
+  year={2025},
+  publisher={Oxford University Press},
+  doi={10.1093/biomet/asaf043}
+}
+
+@misc{chen2025efficient,
+  title={Efficient Difference-in-Differences and Event Study Estimators},
+  author={Chen, Xiaohong and Sant'Anna, Pedro H. C. and Xie, Haitian},
+  year={2025},
+  month={jun},
+  note={Cowles Foundation Discussion Paper 2470; arXiv:2506.17729},
+  url={https://cowles.yale.edu/research/cfdp-2470-efficient-difference-differences-and-event-study-estimators}
+}
+
+@article{baker2025did,
+  title={Difference-in-Differences Designs: A Practitioner's Guide},
+  author={Baker, Andrew and Callaway, Brantly and Cunningham, Scott and Goodman-Bacon, Andrew and Sant'Anna, Pedro H.C.},
+  journal={Journal of Economic Literature},
+  year={2025},
+  note={forthcoming}
+}
+
+@article{caetano2024did,
+  title={Difference-in-Differences when Parallel Trends Holds Conditional on Covariates},
+  author={Caetano, Carolina and Callaway, Brantly},
+  journal={arXiv preprint arXiv:2406.15288},
+  year={2024}
+}
+
+@misc{callaway2023ddml,
+  title={Double/Debiased Machine-Learning Estimator for Difference-in-Difference with Multiple Periods},
+  author={Callaway, Brantly and Drukker, David and Liu, Di and Sant'Anna, Pedro H. C.},
+  year={2023},
+  month={apr},
+  note={Working paper},
+  url={https://www.researchgate.net/publication/370440876_DoubleDebiased_Machine-learning_estimator_for_Difference-in-Difference_with_Multiple_Periods}
+}
+
+@article{sant2020doubly,
+  title={Doubly robust difference-in-differences estimators},
+  author={Sant'Anna, Pedro H.C. and Zhao, Jun},
+  journal={Journal of Econometrics},
+  volume={219},
+  number={1},
+  pages={101--122},
+  year={2020},
+  publisher={Elsevier}
+}
+
+@article{crump2009trimming,
+  title={Dealing with limited overlap in estimation of average treatment effects},
+  author={Crump, Richard K. and Hotz, V. Joseph and Imbens, Guido W. and Mitnik, Oscar A.},
+  journal={Biometrika},
+  volume={96},
+  number={1},
+  pages={187--199},
+  year={2009},
+  publisher={Oxford University Press},
+  doi={10.1093/biomet/asn055}
+}
+
+@article{yangding2018,
+  title={Asymptotic inference of causal effects with observational studies trimmed by the estimated propensity scores},
+  author={Yang, Shu and Ding, Peng},
+  journal={Biometrika},
+  volume={105},
+  number={2},
+  pages={487--493},
+  year={2018},
+  publisher={Oxford University Press}
+}
+
+@article{li2018balancing,
+  title={Balancing covariates via propensity score weighting},
+  author={Li, Fan and Morgan, Kari Lock and Zaslavsky, Alan M},
+  journal={Journal of the American Statistical Association},
+  volume={113},
+  number={521},
+  pages={390--400},
+  year={2018},
+  publisher={Taylor \& Francis}
+}
+
+@article{khan2025trimming,
+  title={Optimal subgroup selection},
+  author={Khan, Samir and Ugander, Johan},
+  journal={Biometrika},
+  volume={112},
+  number={2},
+  pages={asae053},
+  year={2025},
+  publisher={Oxford University Press}
+}
+
+@article{callaway2021did,
+  title={Difference-in-Differences with Multiple Time Periods},
+  author={Callaway, Brantly and Sant'Anna, Pedro H.C.},
+  journal={Journal of Econometrics},
+  volume={225},
+  number={2},
+  pages={200--230},
+  year={2021},
+  publisher={Elsevier},
+  doi={10.1016/j.jeconom.2020.12.001}
+}
+
+@article{miyaji2024instrumented,
+  title={Instrumented Difference-in-Differences with Heterogeneous Treatment Effects},
+  author={Miyaji, Sho},
+  journal={arXiv preprint arXiv:2405.12083},
+  year={2024}
+}
+
+@article{damour2021overlap,
+  title={Overlap in Observational Studies with High-Dimensional Covariates},
+  author={D'Amour, Alexander and Ding, Peng and Feller, Avi and Lei, Lihua and Sekhon, Jasjeet},
+  journal={Journal of Econometrics},
+  volume={221},
+  number={2},
+  pages={644--654},
+  year={2021},
+  publisher={Elsevier}
+}

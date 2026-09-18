@@ -1,0 +1,130 @@
+\section{Optimal Trimming (Conjecture)}\label{sec:app_trimming}
+
+This appendix gives the population heuristic behind the trimming rule in Section~\ref{sec:4}. The argument is suggestive rather than fully proved: it shows why a one-sided rule is natural in this setting and how the proposed criterion relates to a Crump-type level-set problem.
+
+\paragraph{Scope of the argument.} Three steps remain open. First, the reduction from the trimmed asymptotic-variance problem to a Crump-type functional optimization problem is only sketched. The proof below gives the first-order logic for a level-set rule, but it does not supply a full variational argument establishing global sufficiency. Second, the feasible rule in Section~\ref{sec:4} uses estimated objects $(\hat e,\hat g)$ and a sample criterion $\hat R(\alpha)$, while the argument here is purely population-level. A theorem would need uniform convergence and an argmin-consistency result for the selected threshold $\hat\alpha$. Third, the appendix studies hard trimming through sets $\mathbb A$, whereas the implementation trims estimated propensities. Linking the implemented rule to the population problem also remains open. For now, the appendix should be read as formal motivation for the algorithm, with Monte Carlo evidence in Section~\ref{sec:5} providing the main support for its finite-sample performance.
+
+\paragraph{Source of the one-sided instability.} The high-$e(X)$ variance problem follows from the repeated cross-sections structure. Under repeated cross-sections, $G\perp T\mid X$, so $\pi_{gt}(X)=e(X)^g(1-e(X))^{1-g}p^t(1-p)^{1-t}$. For treated-group cells, $\pi_{11}(X)/\pi_{10}(X)=p/(1-p)$, so the $e(X)$ term cancels. For control-group cells, $\pi_{11}(X)/\pi_{0t}(X)=\{e(X)/(1-e(X))\}\times\mathrm{const}$, which diverges only as $e(X)\to 1$. This is why the trimming rule targets the upper tail of $e(X)$ rather than both tails symmetrically.
+
+\subsection{Assumptions}
+
+Maintain Assumptions~\ref{ass:1}--\ref{ass:5} and the third point of Assumption~\ref{ass:8x} (or \ref{ass:1}--\ref{ass:3}, \ref{ass:4prime}, and the third point of Assumption~\ref{ass:8x} for DML-TC). Let $e(x)=\Pr(G=1\mid X=x)$, $\bar e=E[e(X)]$, $p=\Pr(T=1)$, and $DID_D(x)=m^D_{11}(x)-m^D_{10}(x)-m^D_{01}(x)+m^D_{00}(x)$.
+
+\begin{tassumption}[Overlap and regularity]\label{ass:T1}
+There exist $c,c_\sigma,c_D,c_{FS}>0$ and $C_\sigma<\infty$ such that $c\le e(x)\le 1-c$, $c_\sigma\le \sigma^2_{gt}(x),\sigma^2_{dgt}(x)\le C_\sigma$, $q_{d\mid gt}(x)\ge c_D$, and $DID_D(x)\ge c_{FS}$ for all $(d,g,t,x)$. $\mathbb X$ is compact with $f_X$ bounded away from zero.
+\end{tassumption}
+
+\begin{tassumption}[First-stage independence]\label{ass:T2}
+$DID_D(X)\perp\!\!\!\perp e(X)$.
+\end{tassumption}
+
+\begin{tassumption}[Atomless effective cost]\label{ass:T3}
+$\kappa^j(X)$ defined below is absolutely continuous under $\tilde P$ with strictly positive density on its support.
+\end{tassumption}
+
+\subsection{Score Variance and Objective}
+
+\begin{lemma}[Conditional score variance]\label{lem:variance}
+Under Assumptions~\ref{ass:1}--\ref{ass:5}, the third point of Assumption~\ref{ass:8x}, and \ref{ass:T1},
+\begin{equation}\label{eq:kwald}
+    k^{wald}(x)=E[(\psi^{wald}_i)^2\mid X=x] = \frac{e(x)}{\bar e^2}\!\left[\frac{\sigma^2_{11}(x)}{p}+\frac{\sigma^2_{10}(x)}{1-p}+\frac{e(x)}{1-e(x)}\!\left(\frac{\sigma^2_{01}(x)}{p}+\frac{\sigma^2_{00}(x)}{1-p}\right)\right],
+\end{equation}
+and $k^{tc}(x)$ has the same form with the control-group bracket replaced by $K_{TC}(x)$, the analogous quantity split by treatment status $d$.
+\end{lemma}
+
+\begin{proof}[Proof sketch]
+$G\perp T\mid X$ in repeated cross-sections, so $\pi_{gt}(x)=e(x)^g(1-e(x))^{1-g}p^t(1-p)^{1-t}$. The orthogonal score has one nonzero term per cell; computing $E[\psi^2\mid X]=\sum_{g,t}\pi_{gt}(x)\,E[\psi^2\mid G\!=\!g,T\!=\!t,X\!=\!x]$ over the four cells gives~\eqref{eq:kwald}. For TC the control-group cells split further by $d$, producing $K_{TC}$.
+\end{proof}
+
+For Borel $\mathbb A\subseteq\mathbb X$ with $P(X\in\mathbb A)>0$, the trimmed estimator keeps only observations with $X_i\in\mathbb A$ and applies the same cross-fitted ratio estimator on that subsample. Because the estimator is a ratio, its fixed-parameter asymptotic variance depends on two objects: how much variance the numerator score contributes within $\mathbb A$, and how much identifying strength remains in the denominator. This yields
+\begin{equation}\label{eq:R_criterion_pop}
+    R(\mathbb A)=\frac{E[k^j(X)\mathbf 1_{\mathbb A}]}{(E[\omega(X)\mathbf 1_{\mathbb A}])^2},
+    \quad \omega(x)=\frac{e(x)\,DID_D(x)}{\bar e},
+    \quad \kappa^j(x)=\frac{k^j(x)}{\omega(x)},
+\end{equation}
+where $k^j(X)$ is the numerator variance contribution and $\omega(X)$ measures denominator strength. It is therefore natural to define $\kappa^j(X)=k^j(X)/\omega(X)$ as variance per unit of identifying signal. To make this tradeoff explicit, define the reweighted measure $d\tilde P=(\omega/\bar\omega)\,dP$, where $\bar\omega=E[\omega(X)]$, and let $\tilde q(\mathbb A)=\tilde P(X\in\mathbb A)$ denote the share of identifying mass retained by $\mathbb A$. Then
+\[
+R(\mathbb A)=\bar\omega^{-1}\frac{\tilde E[\kappa^j\mathbf 1_{\mathbb A}]}{\tilde q(\mathbb A)^2}.
+\]
+This re-expression does not change the problem. It makes clear that optimal trimming keeps covariate regions with low variance relative to identifying signal and drops those with poor signal-to-noise ratios.
+
+\subsection{Main Conjecture}
+
+\begin{conjecture}[Optimal trimming]\label{thm:trim}
+Under Assumptions~\ref{ass:T1} and~\ref{ass:T3}, $R(\mathbb A)$ is minimized over Borel $\mathbb A$ with $\tilde q(\mathbb A)>0$ by $\mathbb A^{j*}=\{x:\kappa^j(x)\le\gamma^j\}$ where:
+\begin{enumerate}
+    \item[\textup{(i)}] \textbf{No trimming.} If $\sup_x\kappa^j(x)\le 2\,\tilde E[\kappa^j(X)]$, then $\mathbb A^{j*}=\mathbb X$.
+    \item[\textup{(ii)}] \textbf{Interior.} Otherwise $\gamma^j$ solves
+    \begin{equation}\label{eq:FOC}
+        \gamma=2\,\tilde E[\kappa^j(X)\mid \kappa^j(X)\le\gamma],
+    \end{equation}
+    with a unique solution when $\tilde f_\kappa$ is log-concave and the global minimizer of $\tilde E[\kappa^j\mathbf 1_{\kappa^j\le\gamma}]/\tilde P(\kappa^j\le\gamma)^2$ otherwise. At the optimum, $R(\mathbb A^{j*})=\gamma^j/(2\bar\omega\,\tilde q(\mathbb A^{j*}))$.
+\end{enumerate}
+The Section~\ref{sec:4} algorithm replaces $\omega$ and $\kappa^j$ with cross-fitted sample analogs. Whether the same level-set argument carries over to the estimated criterion remains open.
+\end{conjecture}
+
+\begin{proof}[Proof sketch]
+The tilted objective $\tilde R(\mathbb A)=\tilde E[\kappa^j\mathbf 1_{\mathbb A}]/\tilde q(\mathbb A)^2$ has the same form as the variance objective in \citet[][eq.~8]{crump2009trimming}, with $\tilde P$ as the population distribution and $\kappa^j$ as the cost. Under Assumptions~\ref{ass:T1} and~\ref{ass:T3}, the transformed problem appears to satisfy the regularity conditions that deliver a level-set solution in Crump et al.'s Appendix~A: compact support, bounded density, and an atomless cost distribution under the tilted measure. The missing step is to verify those conditions formally for the transformed problem and to show that the first-order characterization is also sufficient. Conditional on that reduction, the optimizer takes the threshold form in (i)--(ii), and the boundary condition gives~\eqref{eq:FOC}.
+\end{proof}
+
+\subsection{Consequences (conditional on Conjecture~\ref{thm:trim})}
+
+\begin{conjecture}[One-sided trimming under weak monotonicity]\label{cor:onesided}
+Suppose Conjecture~\ref{thm:trim} holds for $j=\text{wald}$, $\sigma^2_{gt}(x)\equiv\sigma^2$, and $DID_D(x)=g(e(x))$ with $(1-e)\,g(e)$ non-increasing. Then $\kappa^{wald}(x)=\sigma^2/[\bar e\,p(1-p)\,(1-e(x))\,g(e(x))]$ is non-decreasing in $e(x)$, so
+\begin{equation}\label{eq:onesided}
+    \mathbb A^*=\{x:e(x)\le 1-\alpha\}
+\end{equation}
+with no lower bound on $e$. Either $\alpha=0$ (if $\sup_x[(1-e)g(e)]^{-1}\le 2\,\tilde E[(1-e)g(e)]^{-1}$), or $\alpha$ solves
+\begin{equation}\label{eq:alpha_FOC}
+    \frac{1}{\alpha\,g(1-\alpha)}=2\,\frac{E\!\left[\tfrac{e(X)}{1-e(X)}\mathbf 1_{e(X)\le 1-\alpha}\right]}{E\!\left[e(X)\,g(e(X))\,\mathbf 1_{e(X)\le 1-\alpha}\right]}.
+\end{equation}
+\end{conjecture}
+
+\begin{proof}[Proof sketch]
+Under homoskedasticity, Lemma~\ref{lem:variance}(a) gives $k^{wald}(x)=\sigma^2\,e(x)/[\bar e^2\,p(1-p)\,(1-e(x))]$, so $\kappa^{wald}(x)$ has the stated form and is non-decreasing in $e(x)$ by monotonicity of $(1-e)g(e)$. Level sets are therefore $\{e\le 1-\alpha\}$, giving~\eqref{eq:onesided}. Converting the FOC~\eqref{eq:FOC} from $\tilde P$ to $P$ via $\omega=e\,g(e)/\bar e$ and using $\gamma=\sigma^2/[\bar e\,p(1-p)\,\alpha\,g(1-\alpha)]$ yields~\eqref{eq:alpha_FOC}.
+\end{proof}
+
+\begin{conjecture}[First-stage independence]\label{cor:independence}
+Under Conjecture~\ref{cor:onesided} and Assumption~\ref{ass:T2}, $g\equiv \overline{DID_D}$ is constant and cancels in~\eqref{eq:alpha_FOC}, giving
+\begin{equation}\label{eq:indep_FOC}
+    \frac{1}{\alpha}=2\,\frac{E\!\left[\tfrac{e(X)}{1-e(X)}\mathbf 1_{e(X)\le 1-\alpha}\right]}{E\!\left[e(X)\,\mathbf 1_{e(X)\le 1-\alpha}\right]}.
+\end{equation}
+\end{conjecture}
+
+\paragraph{Variance cost under homoskedasticity and weak monotonicity.} The asymmetry motivating the one-sided rule in Section~\ref{sec:4} can be read off Lemma~\ref{lem:variance}. Under homoskedasticity and weak monotonicity, the variance cost per unit of identifying signal is $\kappa^{wald}(x)\propto 1/[(1-e(x))\,g(e(x))]$, where $g(e) = E[\mathrm{DID}_D(X)\mid e(X)=e]$ is the first-stage take-up strength at propensity level $e$. The ATE variance cost in \citet{crump2009trimming} is $1/[e(1-e)]$, symmetric across tails, which gives the matched thresholds $[\alpha,\,1-\alpha]$.
+
+\paragraph{First-stage independence simplification in $\hat R(\alpha)$.} Under first-stage independence (Assumption~\ref{ass:T2}), $\mathrm{DID}_D(X)$ does not depend on $e(X)$, so $g$ is constant and drops out of the $\argmin$ of the sample criterion~\eqref{eq:R_criterion}. In that case I set $\hat g\equiv 1$ in the implementation and skip the regression step in Algorithm~\ref{alg:trimming}.
+
+\subsection{Algorithm}\label{sec:app_trimming_alg}
+
+\begin{algorithm}[H]
+\caption{Data-driven trimming threshold selection. Takes the cross-fitted propensity scores and first-stage estimates already computed for the DML estimator and returns trimmed propensities $\tilde e(X_i)=\min(\hat e(X_i),1-\hat\alpha)$ for use in the final GMM step.}
+\label{alg:trimming}
+\begin{algorithmic}[1]
+\Require Cross-fitted propensity scores $\{\hat e(X_i)\}_{i=1}^N$ from Section~4.2;
+         first-stage estimates $\{\widehat{DID}_D(X_i)\}_{i=1}^N$;
+         lower bound $\varepsilon > 0$ (default $\varepsilon = 0.01$);
+         grid step $\Delta\alpha$ (default $0.01$);
+         upper bound $\alpha_{\max}$ (default $0.50$).
+\Ensure Trimmed propensities $\tilde e(X_i) = \min\!\bigl(\hat e(X_i),\,1 - \hat\alpha\bigr)$ for all $i=1,\ldots,N$.
+\State \textbf{Estimate $\hat g$.} \,Regress $\widehat{DID}_D(X_i)$ on $\hat e(X_i)$ by local polynomial smoothing; select bandwidth by leave-one-out cross-validation. Denote fitted values $\hat g(\hat e(X_i))$.
+\State \textbf{Initialize.} Set grid $\mathcal{A} \leftarrow \{\varepsilon,\,\varepsilon + \Delta\alpha,\,\ldots,\,\alpha_{\max}\}$.
+\For{each $\alpha \in \mathcal{A}$}
+  \State Compute
+  \[
+    \hat R(\alpha) \;=\;
+    \frac{\displaystyle\sum_{i=1}^{N}
+          \frac{\hat e(X_i)}{1-\hat e(X_i)}\,
+          \mathbf{1}\!\left\{\hat e(X_i)\le 1-\alpha\right\}}
+         {\displaystyle\left(\sum_{i=1}^{N}
+          \hat e(X_i)\,\hat g\!\left(\hat e(X_i)\right)
+          \mathbf{1}\!\left\{\hat e(X_i)\le 1-\alpha\right\}\right)^{\!2}}.
+  \]
+  \Comment{$\varepsilon > 0$ prevents division-by-zero when $\hat e(X_i)\approx 1$.}
+\EndFor
+\State \textbf{Select threshold.} $\hat\alpha \;\leftarrow\; \arg\min_{\alpha\in\mathcal{A}}\,\hat R(\alpha)$.
+\State \textbf{Trim.} Return $\tilde e(X_i) \leftarrow \min\!\bigl(\hat e(X_i),\,1-\hat\alpha\bigr)$ for all $i$.
+\end{algorithmic}
+\end{algorithm}
+
+\FloatBarrier

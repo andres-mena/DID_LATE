@@ -1,0 +1,28 @@
+\section{Propensity Score Trimming}\label{sec:4}
+
+Section~\ref{sec:3b} shows that DML-Wald and DML-TC require estimation of propensity scores $e(X) = \Pr(G = 1 \mid X)$ through the Riesz representers. As in traditional IPW, these propensities enter the denominator of the score, so the weights on the control-group cells behave like $e(X)/(1-e(X))$ and blow up as $e(X) \to 1$. A single rare control observation with high-propensity covariates can then dominate the estimator's variance. Trimming is the natural response. The goal is to drop observations whose contribution to variance exceeds their contribution to identifying signal.
+
+The relevant problem is to improve precision without discarding too much identifying variation. Because Wald-DID is a ratio, trimming lowers the variance of the score, but it also removes first-stage take-up variation from the denominator. Appendix~\ref{sec:app_trimming} formalizes this trade-off. The trimming rule is chosen to minimize variance relative to the identifying strength that remains after trimming. In that sense, trimming keeps observations with a favorable signal-to-noise ratio and drops those whose extreme propensity scores contribute much more noise than signal.
+
+The trade-off is asymmetric in $e(x)$. Low-$e$ observations carry first-stage information at little variance cost, while observations with $e(x)$ near one inflate variance without adding much identifying strength. The intuition behind this is that high-$e(x)$ cells are precisely where the control group, which supplies the benchmark trend that DiD subtracts off, has vanishing mass, so a handful of control observations are forced to stand in for a large counterfactual and amplify variance without adding signal. The relevant margin is therefore the upper tail, not both tails, and the algorithm below selects this upper threshold data-adaptively.
+
+\subsection{Trimming Algorithm}\label{sec:4c}
+
+The rule picks $\hat\alpha$ by minimizing a sample criterion $\hat R(\alpha)$ that weighs variance cost against retained first-stage signal. Using the cross-fitted propensity scores of Section~\ref{sec:3b}, define
+\begin{equation}\label{eq:R_criterion}
+    \hat R(\alpha)
+    = \frac{\sum_{i=1}^N \frac{\hat e(X_i)}{1-\hat e(X_i)}\,\mathbf 1\{\hat e(X_i)\le 1-\alpha\}}{\left(\sum_{i=1}^N \hat e(X_i)\,\hat g(\hat e(X_i))\,\mathbf 1\{\hat e(X_i)\le 1-\alpha\}\right)^{\!2}},
+\end{equation}
+where $\hat g$ is a flexible regression of $\widehat{\mathrm{DID}}_D$ on $\hat e$.
+
+The numerator of~\eqref{eq:R_criterion} sums the Riesz weights $\hat e(X_i)/(1-\hat e(X_i))$ over observations kept by the cut. Each weight measures how much variance a given observation injects into the score, so the numerator is the total variance cost of the retained sample. The denominator does the same accounting for the identifying signal. It sums the first-stage take-up $\hat e(X_i)\,\hat g(\hat e(X_i))$ over the same observations and then squares the total. The square matters because Wald-DID is a ratio estimator, and the asymptotic variance of a ratio scales inversely with the squared first stage. Dividing by a squared denominator therefore makes $\hat R(\alpha)$ the sample analog of asymptotic MSE per retained observation.
+
+Read this way, $\hat R(\alpha)$ is a price. It is the variance we pay per unit of first-stage strength we retain, and $\hat\alpha = \argmin_\alpha \hat R(\alpha)$ makes this price as cheap as possible. I compute $\hat\alpha$ once on the pooled cross-fitted scores and apply it uniformly across folds. The estimator of Section~\ref{sec:3} then uses the trimmed propensity $\hat e \mapsto \min(\hat e,\,1-\hat\alpha)$, and Algorithm~\ref{alg:trimming} in Appendix~\ref{sec:app_trimming} states the full procedure. Simulations in Section~\ref{sec:5} suggest that this rule minimizes MSE across the DGPs considered.
+
+\begin{remark}[Bias-variance trade-off]\label{rmk:bias_variance}
+Trimming changes the estimand from the population LATE to a subpopulation LATE on $\{x : e(x)\le 1-\alpha\}$. Raising $\alpha$ lowers variance by cutting high-weight observations but also reduces identifying signal by shrinking this support, so the minimizer $\hat\alpha$ balances the marginal variance saving against the marginal loss of first-stage signal. The drift in the estimand is zero under homogeneous treatment effects and of order $O(P(X\notin\mathbb A))$ when the conditional LATE is bounded. Appendix~\ref{sec:app_trimming} conjectures that under homoskedasticity and weak monotonicity of $(1-e)\,g(e)$ the variance-minimizing rule is one-sided with no lower bound on $e(x)$.
+\end{remark}
+
+\begin{remark}[Wald-specific derivation]\label{rmk:trim_scope}
+The criterion $\hat R(\alpha)$ and Conjecture~\ref{cor:onesided} are derived for the Wald score, whose Riesz representer loads on the propensity odds ratio $e(X)/(1-e(X))$ and therefore inherits the upper-tail instability that motivates trimming. The TC score does not contain this odds-ratio term, so DML-TC is less sensitive to tail behavior of $\hat e(X)$ in the simulations of Section~\ref{sec:5} and in the INPRES application of Section~\ref{sec:6}. A formal extension of the rule to TC is left for future work.
+\end{remark}

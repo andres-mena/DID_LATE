@@ -1,0 +1,38 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+*.Rproj
+inst/doc
+*.tar.gz
+*.Rcheck/
+reviews/
+
+# Secrets and local state
+.env
+*.env
+*credentials*
+*.password
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Replication outputs that are regenerated locally
+data/raw/
+data/clean/*.rds
+data/simulations/
+output/simulations/
+*.rds
+*.rda
+
+# Keep package data committed
+!data/duflo.rda

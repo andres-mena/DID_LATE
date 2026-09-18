@@ -1,0 +1,97 @@
+% =============================================================================
+% Working paper format (AEA style: Times, 1in margins, onehalfspacing body)
+% =============================================================================
+\documentclass[reqno,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage[round, authoryear]{natbib}
+\usepackage{amsmath, amssymb, dsfont, bbm, amsthm}
+\usepackage{graphicx, booktabs, subcaption, float, placeins, multirow}
+\usepackage{algorithm, algpseudocode}
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage[nodisplayskipstretch]{setspace}
+
+\definecolor{paired10lightred}{RGB}{237, 159, 156}
+\usepackage[colorlinks=true,
+            linkcolor=NavyBlue,
+            filecolor=blue,
+            urlcolor=paired10lightred,
+            citecolor=NavyBlue,
+            pdftitle={Double Debiased Machine Learning for Difference-in-Differences under Imperfect Compliance},
+            pdfauthor={Andres Mena}]{hyperref}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Theorem environments
+\theoremstyle{plain}
+\newtheorem{assumption}{Assumption}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+
+% Trimming assumptions (displayed as "Assumption T1", "Assumption T2", ...)
+\newtheorem{tassumption}{Assumption}
+\renewcommand{\thetassumption}{T\arabic{tassumption}}
+
+% Proof sub-environments (upright body)
+\newtheoremstyle{proofstyle}{6pt}{4pt}{\upshape}{}{\bfseries}{.}{0.5em}{}
+\theoremstyle{proofstyle}
+\newtheorem{propproof}{Proposition}
+\newtheorem{theoremproof}{Theorem}
+
+\newcommand{\propositionref}[1]{Proposition~\ref{#1}}
+
+\begin{document}
+ 
+\title{Double Debiased Machine Learning for Difference-in-Differences under Imperfect Compliance\thanks{I thank Susanne Schennach, Peter Hull, Toru Kitagawa, and Jonathan Roth for helpful comments and conversations, as well as participants in the Brown Econometrics Coffee for valuable feedback. All remaining errors are my own.}}
+\author{Andres Mena\\Brown University}
+\date{March 2026}
+\maketitle
+
+\begin{abstract}
+\noindent This paper develops debiased machine learning estimators for difference-in-differences designs with imperfect compliance. I derive closed-form orthogonal scores for the Wald-DID and time-corrected estimands of \citet{fuzzy2018} and construct cross-fitted GMM estimators that are $\sqrt{n}$-consistent and asymptotically normal under standard rate conditions on the nuisance functions. I also propose a data-driven trimming rule that targets a sample analog of the estimator's asymptotic variance, excludes only observations whose probability of belonging to the treated group is close to one, and does not require knowledge of the treatment effect. Simulations suggest that the estimators achieve nominal coverage at moderate sample sizes. An application to the INPRES school construction program illustrates the method.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Keywords:} Difference-in-Differences, Machine Learning, Double Debiasing, Fuzzy DID, Propensity Score Trimming\\
+\noindent\textbf{JEL:} C13, C14, C21, C55.
+
+\newpage
+\onehalfspacing
+
+% --- Main body ---
+\input{sections/introduction}
+\input{sections/literature}
+\input{sections/setup}
+\input{sections/estimators}
+\input{sections/trimming}
+\input{sections/simulations}
+\input{sections/empirical}
+\input{sections/conclusion}
+
+\newpage
+\bibliographystyle{aea}
+\bibliography{biblio}
+
+\newpage
+\appendix
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+\input{sections/appendix_simulations}
+\input{sections/appendix_empirical}
+\input{sections/appendix_proofs}
+\input{sections/appendix_trimming}
+\input{sections/appendix_cdh_reference}
+
+\end{document}

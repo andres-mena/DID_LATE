@@ -1,0 +1,382 @@
+\section{Proofs}
+
+This appendix proves the paper's original results. The identification assumptions and the underlying identification result of \citet{fuzzy2018} are reproduced in Appendix~\ref{sec:app_cdh_reference} for reader convenience.
+
+\begin{center}
+\small
+\begin{tabular}{llcl}
+\toprule
+Result & Statement & Location & Proof \\
+\midrule
+Proposition~\ref{prop:1} & Identifying moments for Wald-DID and TC & §\ref{sec:3a} & Appendix~\ref{sec:app_proof_prop1} \\
+Proposition~\ref{prop:2} & Closed-form first-step influence functions & §\ref{sec:3b} & Appendix~\ref{sec:app_proof_prop2} \\
+Proposition~\ref{prop:3} & Local robustness of $\psi^{wald}$ and $\psi^{tc}$ & §\ref{sec:3c} & Appendix~\ref{sec:app_proof_prop3} \\
+Theorem~\ref{thm:1} & $\sqrt{n}$-consistency and asymptotic normality & §\ref{sec:3e} & Appendix~\ref{sec:app_proofs_thm1} \\
+Proposition~\ref{prop:4} & Semiparametric efficiency & §\ref{sec:3e} & Appendix~\ref{sec:app_proofs_prop4} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Proof of Proposition~\ref{prop:1}: Identifying Moments}\label{sec:app_proof_prop1}
+\begin{propproof}
+
+\noindent \\
+\textit{At the true nuisance vectors, the pointwise moments in \eqref{eq:5} and \eqref{eq:6} generate the same zero restrictions as the centered estimands in \eqref{eq:Wdid} and \eqref{eq:Wtc}. Therefore, under the corresponding identification assumptions, both moment functions identify the same target $\Delta$.}
+
+\medskip
+\noindent\textbf{Proof.} I show that $E[g^j(W,\gamma^j_0,\theta)]=0$ is equivalent to the corresponding centered estimand being zero, then apply the identification results of \cite{fuzzy2018}.
+
+\medskip
+\noindent\textit{Wald case.} At the true nuisance vector, for any $\theta$,
+\begin{align*}
+    g^{wald}(W,\gamma^{wald}_0,\theta) &= \frac{GT}{p_{11}}\big[(Y-m^Y_{10}(X)-m^Y_{01}(X)+m^Y_{00}(X))- (D-m^D_{10}(X) \\
+    &\quad -m^D_{01}(X)+m^D_{00}(X))\theta\big] \\
+     &= \frac{GT}{p_{11}}[DID_Y(X)-DID_D(X)\theta].
+\end{align*}
+Taking expectations on both sides, recalling that $E[GT]=p_{11}=\Pr(G=1,T=1)$, and using linearity of expectations and the definition of conditional expectation, this gives:
+\begin{align*}
+    E[g^{wald}(W,\gamma^{wald}_0,\theta)] &= E\left[\frac{GT}{p_{11}}(DID_Y(X)-DID_D(X)\theta)\right]  \\
+    &= E\left[DID_Y(X)|G=1,T=1\right] - E\left[DID_D(X)|G=1,T=1\right]\theta.
+\end{align*}
+Since the denominator in $W^{DID}$ is nonzero,
+\begin{align*}
+    \frac{E[g^{wald}(W,\gamma^{wald}_0,\theta)]}
+    {E\left[DID_D(X)|G=1,T=1\right]}
+    &= W^{DID} - \theta.
+\end{align*}
+Therefore $E[g^{wald}(W,\gamma^{wald}_0,\theta)]=0$ if and only if $W^{DID}-\theta=0$. Under the Wald-DID identification assumptions, \citet{fuzzy2018} gives $W^{DID}=\Delta$.
+
+\noindent\textit{TC case.} The same calculation gives, at the true nuisance vector and for any $\theta$,
+\begin{align*}
+    E[g^{tc}(W,\gamma^{tc}_0,\theta)]
+    &= E\left[Y-m^Y_{10}(X)-m^D_{10}(X)\delta_1(X)-(1-m^D_{10}(X))\delta_0(X)\mid G=1,T=1\right] \\
+    &\quad - E\left[D-m^D_{10}(X)\mid G=1,T=1\right]\theta.
+\end{align*}
+Since the denominator in $W^{TC}$ is nonzero,
+\[
+    E[g^{tc}(W,\gamma^{tc}_0,\theta)]=0
+    \quad\Longleftrightarrow\quad
+    W^{TC}-\theta=0.
+\]
+Under the TC identification assumptions, \citet{fuzzy2018} gives $W^{TC}=\Delta$. $\square$
+
+\end{propproof}
+
+\subsection{Proof of Proposition~\ref{prop:2}: First-Step Influence Functions}\label{sec:app_proof_prop2}\label{sec:app_fsif}
+\begin{propproof}
+
+\noindent \\
+\textit{For $j\in\{\text{wald},\text{tc}\}$, let $\mathcal{M}^j(\gamma^j,\theta)=E[g^j(W,\gamma^j,\theta)]$. The first-step influence function of $\mathcal{M}^j$ with respect to $\gamma^j$ is $\phi^j(W,\gamma^j,\alpha^j,\theta)=\sum_{k=1}^{K_j}\alpha^j_k(W)(R^j_k-\gamma^j_k(X))$. The closed-form Riesz representers are given by Equations~\ref{eq:fsif_wald_alpha_app}--\ref{eq:fsif_tc_alpha2_app}, and the element-by-element expressions for $\phi^{wald}$ and $\phi^{tc}$ are Equations~\ref{eq:8_app}--\ref{eq:9_app}.}
+
+\medskip
+\noindent\textbf{Proof.} I follow the pathwise derivative framework of \cite{ichimura2022influence} to derive the FSIF by computing the Gateaux derivative of $\mathcal{M}^j(\gamma^j(F),\theta)$ along smooth paths $F_\tau = (1-\tau)F_0 + \tau H$. Since $g^{wald}$ is additively separable in its $K=6$ nuisance functions, the FSIF decomposes as a sum of component-wise FSIFs by Ichimura and Newey (2022, Section 5).
+
+\medskip
+\noindent\textit{Pathwise setup and cell weights.} For a path $F_\tau = (1-\tau)F_0 + \tau H$, the first-step influence function $\phi(W,\gamma,\alpha,\theta)$ associated with the moment $g(W,\gamma,\theta)$ satisfies
+\begin{equation}\label{eq:fsif_def_app}
+    \frac{\partial}{\partial \tau}E[g(W,\gamma(F_{\tau}),\theta)]\bigg|_{\tau=0}
+    = \int \phi(w,\gamma_0,\alpha_0,\theta)\,H(dw),
+    \qquad E[\phi(W,\gamma_0,\alpha_0,\theta)] = 0,
+    \qquad E[\phi^2] < \infty.
+\end{equation}
+The Riesz representers below express this derivative as a weighted residual. Define $\pi_{gt}(X)=\Pr(G\!=\!g,T\!=\!t\mid X)$ and $\pi_{dgt}(X)=\Pr(D\!=\!d,G\!=\!g,T\!=\!t\mid X)$. For any relevant $(G,T)$ or $(D,G,T)$ cell $c$, set
+\begin{equation}\label{eq:cellweight_app}
+    \rho_c(W)=\frac{\mathbf{1}\{W\in c\}\,\pi_{11}(X)}{\pi_c(X)\,p_{11}}.
+\end{equation}
+The factor $\rho_c$ selects observations in cell $c$ and reweights them toward the target cell $(G,T)=(1,1)$.
+
+\medskip
+\noindent\textit{Closed-form representers.} Differentiating \eqref{eq:5} with respect to $\gamma^{wald}=\{m^R_{gt}\}_{R\in\{Y,D\},(g,t)\neq(1,1)}$ yields
+\begin{equation}\label{eq:fsif_wald_alpha_app}
+    \alpha^{wald}_{m^R_{gt}}(W)=\lambda^R_{gt}\,\rho_{gt}(W),
+\end{equation}
+where
+\begin{equation*}
+    \lambda^Y_{10}=\lambda^Y_{01}=-1,\quad \lambda^Y_{00}=1,
+    \qquad
+    \lambda^D_{10}=\lambda^D_{01}=\theta,\quad \lambda^D_{00}=-\theta.
+\end{equation*}
+Differentiating \eqref{eq:6} with respect to $\gamma^{tc}=\{m^Y_{10},m^D_{10},\mu^Y_{d0t}\}_{d,t\in\{0,1\}}$ yields
+\begin{align}
+    \alpha^{tc}_{m^Y_{10}}(W)&=-\rho_{10}(W), \label{eq:fsif_tc_alpha1_app}\\
+    \alpha^{tc}_{m^D_{10}}(W)&=(\delta_0(X)-\delta_1(X)+\theta)\rho_{10}(W), \label{eq:fsif_tc_alpha1b_app}\\
+    \alpha^{tc}_{\mu^Y_{d0t}}(W)&=(-1)^t q_d(X)\rho_{d0t}(W), \label{eq:fsif_tc_alpha2_app}
+\end{align}
+where $q_1(X)=m^D_{10}(X)$ and $q_0(X)=1-m^D_{10}(X)$.
+
+\medskip
+\noindent\textit{Explicit FSIFs.} Substituting \eqref{eq:fsif_wald_alpha_app} and \eqref{eq:fsif_tc_alpha1_app}--\eqref{eq:fsif_tc_alpha2_app} into $\phi^j=(\alpha^j)^\top(R^j-\gamma^j)$ gives
+\begin{equation}\label{eq:8_app}
+\begin{aligned}
+    \phi^{wald} = & -\frac{G(1-T)\pi_{11}(X)}{\pi_{10}(X)p_{11}} \Big(Y-m^Y_{10}(X)- (D-m^D_{10}(X))\theta\Big) \\
+    & - \frac{(1-G)T\pi_{11}(X)}{\pi_{01}(X)p_{11}}\Big(Y-m^Y_{01}(X)- (D-m^D_{01}(X))\theta\Big) \\
+    & + \frac{(1-G)(1-T)\pi_{11}(X)}{\pi_{00}(X)p_{11}} \Big(Y-m^Y_{00}(X)- (D-m^D_{00}(X))\theta\Big),
+\end{aligned}
+\end{equation}
+and
+\begingroup\small
+\begin{equation}\label{eq:9_app}
+\begin{aligned}
+    \phi^{tc} = & -\frac{G(1\!-\!T)\pi_{11}}{\pi_{10}\,p_{11}} \Big(Y\!-\!m^Y_{10}\!-\! (D\!-\!m^D_{10})(\delta_0\!-\!\delta_1\!+\!\theta)\Big) \\
+    & - m^D_{10}\frac{\pi_{11}}{p_{11}}\bigg(\frac{D(1\!-\!G)T}{\pi_{101}} (Y\!-\!\mu^Y_{101}) - \frac{D(1\!-\!G)(1\!-\!T)}{\pi_{100}}(Y\!-\!\mu^Y_{100})\bigg) \\
+    & - (1\!-\!m^D_{10})\frac{\pi_{11}}{p_{11}}\bigg(\frac{(1\!-\!D)(1\!-\!G)T}{\pi_{001}} (Y\!-\!\mu^Y_{001}) - \frac{(1\!-\!D)(1\!-\!G)(1\!-\!T)}{\pi_{000}}(Y\!-\!\mu^Y_{000})\bigg).
+\end{aligned}
+\end{equation}
+\endgroup
+The rest of the proof verifies these representers from the pathwise derivative.
+
+\medskip
+\noindent\textit{Wald case.}
+
+Since $g^{wald}$ depends on $K = 6$ nuisance functions $\gamma^{wald} = (m^Y_{10}, m^Y_{01}, m^Y_{00}, m^D_{10}, m^D_{01}, m^D_{00})$ and is additively separable in each, the FSIF decomposes as a sum of component-wise FSIFs (Ichimura and Newey 2022, Section 5):\\
+
+$$ \phi^{wald}(W, \gamma^{wald}, \alpha^{wald}, \theta) = \sum_{k=1}^{6} \phi_k(W, \gamma_k, \alpha_k, \theta) $$\\
+
+For each component $\gamma_k(X) = E[R_k | G = g_k, T = t_k, X]$, the key observation is that $g^{wald}$ is \textit{linear} in $\gamma_k$. This means Assumptions 1--2 of \cite{ichimura2022influence} are trivially satisfied: the coefficient of $\gamma_k(X)$ in $E[g^{wald}]$ yields $v_{m,k}(X)$ directly, and the residual $\rho_k(W, \gamma_k) = \mathbf{1}_{[G=g_k, T=t_k]}(R_k - \gamma_k(X))$ gives $v_{\rho,k}(X) = -\pi_{g_k t_k}(X)$. The Riesz representer is therefore $\alpha_k(X) = v_{m,k}(X) / \pi_{g_k t_k}(X)$, and the component-wise FSIF is $\phi_k = \alpha_k(X) \rho_k(W, \gamma_k)$.\\
+
+The vector of nuisance functions for the $g^{wald}(W,\gamma^{wald}(F_{\tau}),\theta)$ moment function on equation \ref{eq:5} is:\\
+
+$$\gamma^{wald}(F_{\tau})=[m^Y_{10}(F_{\tau}),m^Y_{01}(F_{\tau}),m^Y_{00}(F_{\tau}),m^D_{10}(F_{\tau}),m^D_{01}(F_{\tau}),m^D_{00}(F_{\tau})]$$\\
+
+Since $g^{wald} = (GT/p_{11})[\ldots]$ and $E[GT/p_{11}|X] = \pi_{11}(X)/p_{11}$, the functional derivative of $E[g^{wald}]$ with respect to each nuisance function $\gamma_k(X)$ at point $X$ carries the factor $\pi_{11}(X)/p_{11}$. The gradient is:
+
+$$ \nabla \mathbf{G(\gamma^{wald})}' = \frac{\pi_{11}(X)}{p_{11}}[-1,-1,1,\theta,\theta,-\theta] $$
+
+where the signs for $m^D_{gt}$ components are positive because $g^{wald}$ contains $-(D - m^D_{10} - m^D_{01} + m^D_{00})\theta$, so $\partial/\partial m^D_{10} = +\theta \cdot \pi_{11}/p_{11}$.
+
+The computation of the influence functions $\mathbb{IF}(\gamma^{wald}(F_{\tau}))$ follows the pathwise derivative framework of \cite{ichimura2022influence}. For each nuisance function $\gamma_k(X) = E[R_k | G=g_k, T=t_k, X]$, the influence function is the Gateaux derivative of the conditional expectation functional along the path $F_\tau = (1-\tau)F_0 + \tau H$. By Proposition 1 of \cite{ichimura2022influence}, this yields the following for the $(G=1,T=0)$ component:
+
+\begin{align}\label{proof:2a}
+    \mathbb{IF}(E_{F_{\tau}}[Y|G=1,T=0,X])  &= \frac{\partial}{\partial \tau}\sum_{X,Y}Y p_{\tau}(Y|1,0,X)\bigg|_{\tau=0} &\notag \\
+    &= \sum_{X,Y}Y \frac{\partial}{\partial \tau} p_{\tau}(Y|G=1,T=0,X)\bigg|_{\tau=0}
+\end{align}\\
+
+Define the event $A=G(1-T)=\mathds{1}_{[G=1,T=0]}$, the subprocess $Z=(Y,G,T,X)$ with pmf $p_{\tau}(Z)=p_{\tau}(Y,G,T,X|D=0)p_{\tau}(D=0)+p_{\tau}(Y,G,T,X|D=1)p_{\tau}(D=1)$ , and note that for the submodel $p_{\tau}(Z)$:
+
+\begin{align*}
+    p_{\tau}(Y|G=1,T=0,X)&=\frac{p_{\tau}(Z)}{p_{\tau}(A,X)} &= \frac{(1-\tau) p_0(Z) + \tau \mathds{1}_{[Z=z]}}{(1-\tau) p_0(A, \omega) + \tau \mathds{1}_{[A=a,Z=z]}}  \\
+    p_{\tau}(A,X)&=\frac{p_{\tau}(A,X)}{p_{\tau}(X)} &=\frac{(1-\tau) p_0(A,X) + \tau \mathds{1}_{[(A=a,X=x)]}}{(1-\tau) p_0(X) + \tau \mathds{1}_{[X=x]}}  \\
+    p_{\tau}(X)&=(1-\tau) p_0(X) + \tau \mathds{1}_{[X=x]}
+\end{align*}
+
+Then, using the product rule, the pathwise derivative of the conditional pmf is:\\
+
+\begin{align*}
+    \frac{\partial}{\partial \tau} p_{\tau}(Y|G=1,T=0,X)\bigg|_{\tau=0} &= \mathds{1}_{[(A=a,X=x)]}\frac{\mathds{1}_{[(Y=y)]}-p_0(Y|A=1,X)}{p_0(A,X)}
+\end{align*}\\
+
+Replacing the pathwise derivative of the pmf in equation \ref{proof:2a} yields:\\
+
+\begin{align}\label{proof:2b}
+    \mathbb{IF}(E_{F_{\tau}}[Y|G=1,T=0,X])  &= \sum_{X,Y}Y \mathds{1}_{[(A=a,X=x)]}\frac{\mathds{1}_{[(Y=y)]}-p_0(Y|A=1,X)}{p_0(A,X)}&\notag \\
+    &= \frac{A}{p_0(A,X)}(Y-m^Y_{10}(X)) &\notag\\
+    &= \frac{G(1-T)}{\pi_{10}(X)}(Y-m^Y_{10}(X))
+\end{align}\\
+
+By repeating the same process for the other elements of $\gamma^{wald}(F_{\tau})$, the vector of influence functions $\mathbb{IF}(\gamma^{wald}(F_{\tau}))$ is given by:\\
+
+\[
+    \mathbb{IF}(\gamma^{wald}(F_{\tau})) =
+\begin{bmatrix}
+    \frac{G(1-T)}{\pi_{10}(X)}(Y-m^Y_{10}(X)) \\
+    \frac{(1-G)T}{\pi_{01}(X)}(Y-m^Y_{01}(X)) \\
+    \frac{(1-G)(1-T)}{\pi_{00}(X)}(Y-m^Y_{00}(X)) \\
+    \frac{G(1-T)}{\pi_{10}(X)}(D-m^D_{10}(X)) \\
+    \frac{(1-G)T}{\pi_{01}(X)}(D-m^D_{01}(X)) \\
+    \frac{(1-G)(1-T)}{\pi_{00}(X)}(D-m^D_{00}(X))
+\end{bmatrix}
+\]
+The FSIF of $\mathbf{G}(\gamma^{wald}(F_{\tau}))$ is the product of the gradient $\nabla G(\gamma^{wald})$ and the vector of influence functions $\mathbb{IF}(\gamma^{wald}(F_\tau))$:
+$$\phi^{wald} = \nabla G(\gamma^{wald})' \cdot \mathbb{IF}(\gamma^{wald}(F_\tau))$$
+
+Substituting the gradient $\nabla G' = (\pi_{11}/p_{11})[-1,-1,1,\theta,\theta,-\theta]$ and the IF vector computed above:
+
+\begin{equation*}
+    \begin{aligned}
+        \phi^{wald}(W,\gamma^{wald},\alpha^{wald},\theta) = & -\frac{\pi_{11}(X)}{p_{11}} \cdot \frac{G(1-T)}{\pi_{10}(X)} (Y-m^Y_{10}(X)- (D-m^D_{10}(X))\theta) \\
+        & - \frac{\pi_{11}(X)}{p_{11}} \cdot \frac{(1-G)T}{\pi_{01}(X)}(Y-m^Y_{01}(X)- (D-m^D_{01}(X))\theta) \\
+        & + \frac{\pi_{11}(X)}{p_{11}} \cdot \frac{(1-G)(1-T)}{\pi_{00}(X)} (Y-m^Y_{00}(X)- (D-m^D_{00}(X))\theta)
+    \end{aligned}
+    \end{equation*}
+
+\noindent where the signs $(-, -, +)$ arise directly from the gradient components $(-1, -1, +1)$ for $Y$ and $(\theta, \theta, -\theta)$ for $D$: the $(1,0)$ and $(0,1)$ cells have coefficient $-1$ for $m^R_{gt}$ in $g^{wald}$, yielding negative corrections, while the $(0,0)$ cell has coefficient $+1$, yielding a positive correction. This recovers equation \ref{eq:8_app}, confirming that the $\pi_{11}(X)/p_{11}$ factor in the Riesz representers comes from the gradient of the functional $E[g^{wald}]$.
+
+\medskip
+\noindent\textit{TC case.} The derivation for $\phi^{tc}$ follows the same framework with $\gamma^{tc} = \{m^Y_{10}, m^D_{10}, \mu^Y_{101}, \mu^Y_{100}, \mu^Y_{001}, \mu^Y_{000}\}$. The key difference is that $g^{tc}$ (equation \ref{eq:6}) contains the bilinear term $\delta_1(X) \cdot m^D_{10}(X)$. However, when computing the component-wise FSIF for each $\gamma_k$ while holding others fixed, $g^{tc}$ is linear in each $\gamma_k$ individually. Therefore, Assumptions 1--2 of \cite{ichimura2022influence} hold for each component, and the FSIF is the sum of component-wise corrections. The six TC nuisance components produce the terms in equation \ref{eq:9_app}: the $m^Y_{10}$ and $m^D_{10}$ residuals combine in the treated-group pre-period line, and the four $\mu^Y_{d0t}$ residuals enter through the treatment-status cells weighted by $m^D_{10}(X)$ or $1-m^D_{10}(X)$. $\square$
+
+\end{propproof}
+
+\subsection{Proof of Proposition~\ref{prop:3}: Local Robustness and Orthogonality}\label{sec:app_proof_prop3}
+\begin{propproof}
+
+\noindent \\
+\textit{For $j\in\{\text{wald},\text{tc}\}$ and any $\theta\in\Theta$, the augmented score $\psi^j=g^j+\phi^j$ satisfies: (i) $E[\phi^j(W,\gamma^j_0,\alpha,\theta)]=0$ for every admissible $\alpha$, so $E[\psi^j(W,\gamma^j_0,\alpha,\theta)]=E[g^j(W,\gamma^j_0,\theta)]$; and (ii) $\partial_\tau E[\psi^j(W,\gamma^j_0+\tau\delta,\alpha^j_0,\theta)]|_{\tau=0}=0$ for every admissible direction $\delta$.}
+
+\medskip
+\noindent\textbf{Proof.} I write the proof for a generic nuisance component and then apply it to the Wald and TC scores. Let $\gamma_k(X)=E[R_k\mid c_k,X]$ denote one nuisance regression, where $c_k$ is the relevant $(G,T)$ or $(D,G,T)$ cell. The corresponding FSIF component has the form
+\[
+    \phi_k(W,\gamma_k,\alpha_k,\theta)
+    =
+    \alpha_k(W,\theta)\{R_k-\gamma_k(X)\},
+\]
+where $\alpha_k$ is supported on cell $c_k$. This is exactly the structure displayed in \eqref{eq:8_app}--\eqref{eq:9_app}.
+
+\medskip
+\noindent\textit{Mean-zero correction.} At the true nuisance function $\gamma_{0,k}$,
+\begin{align*}
+    E[\phi_k(W,\gamma_{0,k},\alpha_k,\theta)]
+    &=
+    E\!\left[\alpha_k(W,\theta)
+    E\{R_k-\gamma_{0,k}(X)\mid c_k,X\}\right] \\
+    &=0,
+\end{align*}
+because $\gamma_{0,k}(X)=E[R_k\mid c_k,X]$ and $\alpha_k$ is supported on $c_k$. Summing over all six Wald components or all TC components gives
+\[
+    E[\phi^j(W,\gamma^j_0,\alpha^j,\theta)]=0,
+    \qquad j\in\{\text{wald},\text{tc}\}.
+\]
+Therefore
+\[
+    E[\psi^j(W,\gamma^j_0,\alpha^j,\theta)]
+    =
+    E[g^j(W,\gamma^j_0,\theta)].
+\]
+This proves the mean-zero correction claim.
+
+\medskip
+\noindent\textit{Neyman orthogonality.} Let $\gamma_\tau=\gamma_0+\tau\delta$. By the Riesz representation established in Proposition~\ref{prop:2},
+\[
+    \frac{\partial}{\partial\tau}
+    E[g^j(W,\gamma^j_\tau,\theta)]\bigg|_{\tau=0}
+    =
+    \sum_k E[\alpha^j_{0,k}(W,\theta)\delta_k(X)].
+\]
+The FSIF contribution moves in the opposite direction:
+\[
+    \frac{\partial}{\partial\tau}
+    E[\phi^j(W,\gamma^j_\tau,\alpha^j_0,\theta)]\bigg|_{\tau=0}
+    =
+    -\sum_k E[\alpha^j_{0,k}(W,\theta)\delta_k(X)].
+\]
+Adding the two derivatives gives
+\[
+    \frac{\partial}{\partial\tau}
+    E[\psi^j(W,\gamma^j_0+\tau\delta,\alpha^j_0,\theta)]
+    \bigg|_{\tau=0}
+    =0.
+\]
+For example, perturbing $m^Y_{10}$ in the Wald score by $\tau\delta(X)$ changes $E[g^{wald}]$ by $-\tau E[\pi_{11}(X)\delta(X)]/p_{11}$ and changes the corresponding FSIF term by $+\tau E[\pi_{11}(X)\delta(X)]/p_{11}$. The same cancellation holds component by component for Wald and TC. $\square$
+
+\end{propproof}
+
+\subsection{Proof of Theorem~\ref{thm:1}}\label{sec:app_proofs_thm1}
+\noindent \textit{Suppose Assumptions~\ref{ass:1}--\ref{ass:3} and Regularity Conditions 1--5 hold. Let $\widehat{DML}^{wald}$ and $\widehat{DML}^{tc}$ be the cross-fitted estimators defined in~\eqref{eq:13}--\eqref{eq:14} with $L$ folds. (i) Under Assumptions~\ref{ass:4}--\ref{ass:5} and the third point of Assumption~\ref{ass:8x}, $\sqrt{n}(\widehat{DML}^{wald} - \Delta) \xrightarrow{d} \mathcal{N}(0, V^{wald})$. (ii) Under Assumption~\ref{ass:4prime} and the third point of Assumption~\ref{ass:8x}, $\sqrt{n}(\widehat{DML}^{tc} - \Delta) \xrightarrow{d} \mathcal{N}(0, V^{tc})$. The asymptotic variance is $V^j=[G^j]^{-2}E[(\psi^j)^2]$, where $G^j=\partial_\theta E[g^j(W,\gamma^j,\theta)]|_{\theta=\Delta}$.}
+
+\begin{theoremproof}
+
+
+\medskip
+\noindent I verify the conditions of Theorem 3.1 in \cite{DDML2018}. The proof proceeds in five steps: (1) linearization via the affine score structure, (2) bounding the bias $r_N$ using Neyman orthogonality, (3) bounding the variance stability $r'_N$, (4) controlling the cross-fitting remainder, and (5) applying Slutsky's theorem. Proposition 1 establishes the moment condition. Proposition 3 establishes both Neyman orthogonality (in $\gamma$) and local robustness (in $\alpha$), yielding $\lambda_N = \lambda'_N = 0$.
+
+\medskip
+\noindent\textit{Wald case.}
+
+    \textit{Step 1: Main Decomposition.} Since $\psi^{wald}$ is affine in $\theta$, the first-order condition of the cross-fitted GMM estimator yields exactly:
+
+    \begin{equation*}
+        \sqrt{n}(\hat{\Delta}^{wald} - \Delta) = -[\hat{G}^{wald}]^{-1} \frac{1}{\sqrt{n}} \sum_{l=1}^L \sum_{i \in I_l} \psi^{wald}(W_i, \hat{\eta}_l, \Delta)
+    \end{equation*}
+    where $\hat{G}^{wald} = \frac{1}{n}\sum_{l}\sum_{i \in I_l} \partial_\theta \psi^{wald}(W_i, \hat{\eta}_l, \theta)$ does not depend on the evaluation point (by affinity of $\psi^{wald}$ in $\theta$). It suffices to show: (I) $\frac{1}{\sqrt{n}}\sum_{l}\sum_{i \in I_l} \psi^{wald}(W_i, \hat{\eta}_l, \Delta) = \frac{1}{\sqrt{n}}\sum_{i=1}^n \psi^{wald}(W_i, \eta_0, \Delta) + o_P(1)$, and (II) $\hat{G}^{wald} \xrightarrow{P} G^{wald} \neq 0$. Part (I) requires bounding three auxiliary quantities:
+    \begin{align}
+    r_N&:=\sup_{\eta \in \mathcal{T}_N} \| E[\psi^{wald}(W, \eta, \Delta)]\|\leq \epsilon_N, \tag{A.1} \\
+   r'_N&:=\sup_{\eta \in \mathcal{T}_N} \Big( E\|\psi^{wald}(W, \eta, \Delta) - \psi^{wald}(W, \eta_0, \Delta) \|^2  \Big)^{1/2} \leq \epsilon_N, \tag{A.2} \\
+    \delta'_N&:=\sup_{r \in (0,1),\eta \in \mathcal{T}_N} \left|\partial^2_r E \left[ \psi^{wald}(W,\eta_0 + r (\eta - \eta_0), \Delta) \right]\right| \leq (\epsilon_N)^2. \tag{A.3}
+    \end{align}
+
+    \textit{Step 2: Bounding $r_N$ (A.1).} By Propositions 1 and 3, the expected score vanishes at $\eta_0$ and the first-order Gateaux derivative in both $\gamma$ and $\alpha$ at $\eta_0$ is zero (Neyman orthogonality and local robustness, respectively). A second-order Taylor expansion gives $E[\psi^{wald}(W, \eta, \Delta)] = \int_0^1 (1-\tau) \partial^2_\tau E[\psi^{wald}(W, \eta_\tau, \Delta)] \, d\tau$. Since $g^{wald}$ is linear in $\gamma$, $\partial^2_\gamma E[g^{wald}] = 0$. By Condition 5(a,c), $\alpha^{wald}$ is Lipschitz in $\pi$ on $[\varepsilon,1-\varepsilon]$ with constant bounded by $\varepsilon^{-2}$, so $\|\hat{\alpha}-\alpha_0\|_{F,2} \leq C\varepsilon^{-2}\|\hat{\pi}-\pi\|_{F,2}$. The second derivative picks up (i) cross-terms $\partial_\gamma \partial_\pi$ from $\phi^{wald}$, each bounded by $C\varepsilon^{-2}\|\hat{\pi}_{gt} - \pi_{gt}\|_{F,2} \|\hat{m}^R_{gt} - m^R_{gt}\|_{F,2}$; (ii) pure $\pi$-terms from the $1/\pi_{gt}$ nonlinearity, which vanish in expectation by cross-fitting independence and the centering $E[R - m^R_{gt}(X) | G=g, T=t, X] = 0$. By condition 5(d), each cross-product is bounded by $(\epsilon_N)^2$. Summing over the three $(g,t)$ pairs and $R \in \{Y, D\}$: $r_N \leq 6C\varepsilon^{-2}(\epsilon_N)^2 = o(n^{-1/2})$.
+
+    \textit{Step 3: Bounding $r'_N$ (A.2).} Since $g^{wald}$ is linear in $\gamma$, the $L_2$ norm of $g^{wald}(W, \gamma, \Delta) - g^{wald}(W, \gamma_0, \Delta)$ is bounded by $C\sum_{(g,t)}\|\hat{m}^R_{gt} - m^R_{gt}\|_{F,2} \leq C'\epsilon_N$ by condition 5(b). For $\phi^{wald}$, the difference decomposes into terms $(\hat{\alpha}_{gt} - \alpha_{0,gt})(R - m^R_{0,gt})$, $\alpha_{0,gt}(m^R_{0,gt} - \hat{m}^R_{gt})$, and cross-products of order $(\epsilon_N)^2$, each bounded in $L_2$ by $C\epsilon_N$ under conditions 1, 2, 4, 5(a,b). Therefore $r'_N = O(\epsilon_N) \to 0$.
+
+    \textit{Step 4: Cross-fitting (A.3).} By construction, $\hat{\eta}_l$ is estimated on $I_l^c$ and independent of $(W_i)_{i \in I_l}$. The conditional mean of each fold's contribution equals $E[\psi^{wald}(W, \hat{\eta}_l, \Delta)] = O((\epsilon_N)^2)$ by Step 2, and the conditional variance is uniformly bounded. By Theorem 3.1 of \cite{DDML2018}, Part (I) holds.
+
+    \textit{Step 5: Slutsky.} $G^{wald} = -E[DID_D(X) | G=1, T=1]$ is bounded away from zero by Assumption 1 ($E[D_{11} - D_{00} | X] > 0$) and Assumption 2 ($E[D_{01}|X] = E[D_{00}|X]$). By the LLN and condition 5(b), $\hat{G}^{wald} \xrightarrow{P} G^{wald}$. Slutsky's theorem and the CLT yield $\sqrt{n}(\hat{\Delta}^{wald} - \Delta) \xrightarrow{d} \mathcal{N}(0, V^{wald})$ where $V^{wald} = [G^{wald}]^{-2} E[(\psi^{wald}(W, \eta_0, \Delta))^2]$.
+
+    \textit{Variance Estimator.} $\hat{V}^{wald} = [\hat{G}^{wald}]^{-2} \cdot \frac{1}{n}\sum_{l}\sum_{i \in I_l} (\psi^{wald}(W_i, \hat{\eta}_l, \hat{\Delta}))^2 \xrightarrow{P} V^{wald}$ by $\hat{G}^{wald} \xrightarrow{P} G^{wald}$, the ULLN, and $r'_N \to 0$.
+
+    \textit{Extension to TC.} The TC estimator $\widehat{DML}^{tc}$ satisfies the same decomposition as Step~1 with $\psi^{tc}$ replacing $\psi^{wald}$ and $G^{tc} = \partial_\theta E[g^{tc}]\big|_{\theta=\Delta}$ replacing $G^{wald}$. I verify bounds (A.1)--(A.3) and the Slutsky step.
+
+    \textit{Step 2 (TC).} The moment function $g^{tc}$ contains the bilinear product $\delta_1(X) \cdot m^D_{10}(X)$, so $\partial^2_\gamma E[g^{tc}] \neq 0$. The second-order Taylor expansion picks up, in addition to the Wald-type $\partial_\gamma \partial_\pi$ cross-terms, the cross-derivatives from the bilinear structure:
+    \begin{align*}
+        \|\hat{\delta}_d - \delta_d\|_{F,2} \cdot \|\hat{m}^D_{10} - m^D_{10}\|_{F,2} &\leq (\epsilon_n)^2, \quad d \in \{0,1\}
+    \end{align*}
+    where $\hat{\delta}_d = \hat{\mu}^Y_{d01} - \hat{\mu}^Y_{d00}$. This requires extending Condition~5(d) to all nuisance pairs in which $g^{tc}$ contains a product $\gamma_j \cdot \gamma_k$: the pairs $(\delta_1, m^D_{10})$, $(\delta_0, m^D_{10})$, and the standard $(\pi_{gt}, m^R_{gt})$ pairs. Each product of estimation errors is bounded by $(\epsilon_n)^2$ under the $n^{-1/4}$ rate on individual nuisance estimators. The pure $\pi$-terms vanish by cross-fitting independence and the centering $E[R_k - \gamma_k \mid \text{cell}_k, X] = 0$. Therefore $r_N \leq C(\epsilon_n)^2 = o(n^{-1/2})$.
+
+    \textit{Step 3 (TC).} The TC FSIF $\phi^{tc}$ has the same residual structure $\alpha_k(W)(R_k - \gamma_k(X))$ as $\phi^{wald}$, with additional components for the treatment-conditional cells $(d,0,t)$. Each component contributes $O(\epsilon_n)$ to the $L_2$ difference, so $r'_N = O(\epsilon_n) \to 0$.
+
+    \textit{Step 4 (TC).} Cross-fitting independence holds by the same argument: $\hat{\eta}_l$ is trained on $I_l^c$ and evaluated on $I_l$.
+
+    \textit{Step 5 (TC).} The Jacobian is $G^{tc} = -E[D - m^D_{10}(X) \mid G\!=\!1, T\!=\!1]$. Under Assumptions~1--2, $E[D \mid G\!=\!1, T\!=\!1, X] > E[D \mid G\!=\!1, T\!=\!0, X] = m^D_{10}(X)$ pointwise, so $G^{tc} < 0$ and is bounded away from zero. By the LLN, $\hat{G}^{tc} \xrightarrow{P} G^{tc}$. Slutsky's theorem and the CLT yield $\sqrt{n}(\widehat{DML}^{tc} - \Delta) \xrightarrow{d} \mathcal{N}(0, V^{tc})$ where $V^{tc} = [G^{tc}]^{-2} E[(\psi^{tc}(W, \eta_0, \Delta))^2]$. $\square$
+\end{theoremproof}
+
+\subsection{Proof of Proposition~\ref{prop:4}: Semiparametric Efficiency}\label{sec:app_proofs_prop4}
+
+\begin{propproof}
+
+\noindent \\
+\textit{Let $\psi^{*}_{DID}$ and $\psi^{*}_{TC}$ denote the efficient influence functions for the Wald-DID and TC estimands derived in \citet[Supplementary Data, p.~45]{fuzzy2018} and reproduced in Appendix~\ref{sec:app_cdh_equiv}. Under Assumptions~\ref{ass:1}--\ref{ass:3} and the relevant additional assumption for each estimand (Assumptions~\ref{ass:4}--\ref{ass:5} and the third point of Assumption~\ref{ass:8x} for DML-Wald; Assumption~\ref{ass:4prime} and the third point of Assumption~\ref{ass:8x} for DML-TC), the orthogonal scores satisfy}
+\begin{align*}
+    \psi^{wald}(W,\gamma^{wald}_0,\alpha^{wald}_0,\Delta)
+    &= -G^{wald}\cdot\psi^{*}_{DID}(W), \\
+    \psi^{tc}(W,\gamma^{tc}_0,\alpha^{tc}_0,\Delta)
+    &= -G^{tc}\cdot\psi^{*}_{TC}(W),
+\end{align*}
+\noindent\textit{where $G^j=\partial_\theta E[g^j(W,\gamma^j,\theta)]|_{\theta=\Delta}$ is the population first-stage Jacobian, so $-G^j$ is the positive first-stage normalization. Consequently the asymptotic variance in Theorem~\ref{thm:1} equals the semiparametric efficiency bound for $\Delta$ in the fuzzy DID model of \citet{fuzzy2018}, and the DML-Wald and DML-TC estimators are semiparametrically efficient.}
+
+\medskip
+\noindent\textbf{Proof.} I match each DML score term-by-term against the CD'H efficient IF from \citet[Supplementary Data, p.~45, Equations 63--65]{fuzzy2018}, reproduced in Appendix~\ref{sec:app_cdh_equiv}. The proportionality constant is $-G^j$, the positive first-stage normalization in the CD'H ratio.
+
+\medskip
+\noindent\textit{Wald case.} The CD'H efficient IF for $W^{DID}$ in the binary two-group design is Equation~\eqref{eq:cdh_if},
+\begin{equation*}
+    \psi^{*}_{DID}(W) \;=\; \frac{1}{\bar{D}}\!\left[\frac{GT}{p_{11}}DID_\varepsilon \;-\; w_{10}(\varepsilon-m^\varepsilon_{10}) \;-\; w_{01}(\varepsilon-m^\varepsilon_{01}) \;+\; w_{00}(\varepsilon-m^\varepsilon_{00})\right],
+\end{equation*}
+with $\bar{D} = E[DID_D(X)\mid G\!=\!1,T\!=\!1]$, $\varepsilon = Y - \Delta D$, $m^\varepsilon_{gt} = m^Y_{gt} - \Delta\, m^D_{gt}$, $DID_\varepsilon = \varepsilon - m^\varepsilon_{10} - m^\varepsilon_{01} + m^\varepsilon_{00}$, and $w_{gt} = \mathbf{1}_{[G=g,T=t]}\,\pi_{11}(X)/(\pi_{gt}(X)\,p_{11})$. The DML-Wald score is $\psi^{wald} = g^{wald} + \phi^{wald}$ with $g^{wald}$ as in Equation~\eqref{eq:5} and $\phi^{wald}$ as in Equation~\eqref{eq:8_app}. Collecting terms at $\theta = \Delta$,
+\begin{align*}
+    \psi^{wald}(W,\gamma^{wald}_0,\alpha^{wald}_0,\Delta)
+    &= \frac{GT}{p_{11}}\bigl(DID_Y(X) - \Delta\,DID_D(X)\bigr) \\
+    &\quad - w_{10}\bigl(Y - m^Y_{10} - (D - m^D_{10})\Delta\bigr) \\
+    &\quad - w_{01}\bigl(Y - m^Y_{01} - (D - m^D_{01})\Delta\bigr) \\
+    &\quad + w_{00}\bigl(Y - m^Y_{00} - (D - m^D_{00})\Delta\bigr).
+\end{align*}
+Substituting $\varepsilon = Y - \Delta D$ and $m^\varepsilon_{gt} = m^Y_{gt} - \Delta\, m^D_{gt}$ gives $Y - m^Y_{gt} - (D - m^D_{gt})\Delta = \varepsilon - m^\varepsilon_{gt}$ in each cell, and $DID_Y(X) - \Delta\,DID_D(X) = DID_\varepsilon$. Therefore
+\begin{align*}
+    \psi^{wald}(W,\gamma^{wald}_0,\alpha^{wald}_0,\Delta)
+    &= \frac{GT}{p_{11}}DID_\varepsilon
+    - w_{10}(\varepsilon-m^\varepsilon_{10})
+    - w_{01}(\varepsilon-m^\varepsilon_{01})
+    + w_{00}(\varepsilon-m^\varepsilon_{00}) \\
+    &= \bar{D}\cdot\psi^{*}_{DID}(W).
+\end{align*}
+From the moment condition~\eqref{eq:5},
+\begin{align*}
+    G^{wald}
+    &= \partial_\theta E[g^{wald}]\big|_{\theta=\Delta} \\
+    &= -E[GT\,DID_D(X)/p_{11}] \\
+    &= -E[DID_D(X)\mid G\!=\!1,T\!=\!1] \\
+    &= -\bar{D}.
+\end{align*}
+Hence $\bar{D}=-G^{wald}$, so the exact proportionality is
+\begin{equation*}
+    \psi^{wald}(W,\gamma^{wald}_0,\alpha^{wald}_0,\Delta) \;=\; -G^{wald}\cdot\psi^{*}_{DID}(W).
+\end{equation*}
+
+\noindent\textit{TC case.} The efficient IF for $W^{TC}$ in \citet[Supplementary Data, Equation~69]{fuzzy2018} takes the same product form, with the treated-group pre-period residual $(Y - m^Y_{10}) - (D - m^D_{10})(\delta_0 - \delta_1 + \Delta)$ in the $(1,0)$ cell and the four treatment-conditional residuals $(Y - \mu^Y_{dgt})$ in the $(d,0,t)$ cells, all weighted by the corresponding Riesz representers from \eqref{eq:fsif_tc_alpha1_app}--\eqref{eq:fsif_tc_alpha2_app}. Matching term by term against the DML-TC score $\psi^{tc} = g^{tc} + \phi^{tc}$, with $g^{tc}$ from \eqref{eq:6} and $\phi^{tc}$ from \eqref{eq:9_app}, yields the identity
+\begin{equation*}
+    \psi^{tc}(W,\gamma^{tc}_0,\alpha^{tc}_0,\Delta) \;=\; -G^{tc}\cdot\psi^{*}_{TC}(W),
+\end{equation*}
+where $G^{tc} = -E[D - m^D_{10}(X) \mid G\!=\!1,T\!=\!1]$ is the TC first-stage Jacobian from Theorem~\ref{thm:1}. The algebra is analogous to the Wald case. Each FSIF component absorbs the corresponding efficient-IF term, and the overall scale $1/(-G^{tc})$ is the CD'H normalization by the positive population first stage.
+
+\medskip
+\noindent\textit{Efficiency conclusion.} Because $\psi^{*}_{DID}$ and $\psi^{*}_{TC}$ are the efficient influence functions of $\Delta$ in the fuzzy DID model of \citet{fuzzy2018}, they attain the semiparametric efficiency bound \citep{hahn1998, newey1994asymptotic}. The asymptotic variance in Theorem~\ref{thm:1} is $V^{j} = [G^{j}]^{-2}\,E[(\psi^{j})^2] = E[(\psi^{*}_{j})^2]$, which is the efficiency bound for $\Delta$. The DML-Wald and DML-TC estimators are therefore semiparametrically efficient. $\square$
+
+\end{propproof}

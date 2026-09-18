@@ -1,0 +1,126 @@
+\section{Reference Material from \citet{fuzzy2018} Supplement}\label{sec:app_cdh_reference}
+
+This appendix reproduces the covariate assumptions and theorem statements from the Supplementary Data of \citet{fuzzy2018}, especially Section~1.4, ``Identification with covariates,'' and Theorem~S6 from Section~5.7. The material is included for the reader's convenience and is not original. Where the supplement's notation differs slightly from the notation in the main text, the displayed statements below follow the supplement.
+
+\subsection{Identification Assumptions}\label{sec:app_setup}
+
+Following the notation of \citet{fuzzy2018}, for any random variable $R$, $\mathcal{S}(R)$ denotes its support, and $R_{gt}$ and $R_{dgt}$ are random variables with $R_{gt} \sim R \mid G=g, T=t$ and $R_{dgt} \sim R \mid D=d, G=g, T=t$, where $\sim$ denotes equality in distribution.
+
+\renewcommand{\theassumption}{\arabic{assumption}X}
+\setcounter{assumption}{0}
+
+\begin{assumption}[Conditional fuzzy design]\label{ass:1}
+Almost surely, $E(D_{11}\mid X) > E(D_{10}\mid X)$, and $E(D_{11}\mid X)-E(D_{10}\mid X) > E(D_{01}\mid X)-E(D_{00}\mid X)$.
+\end{assumption}
+
+\begin{assumption}[Stable conditional percentage of treated units in the control group]\label{ass:2}
+Almost surely, $0 < E(D_{01}\mid X) = E(D_{00}\mid X) < 1$.
+\end{assumption}
+
+\begin{assumption}[Treatment participation equation]\label{ass:3}
+$D = \mathbf{1}\{V \ge v_{GTX}\}$, where $V \perp\!\!\!\perp T \mid G,X$. We then define $D(t) = \mathbf{1}\{V \ge v_{GtX}\}$.
+\end{assumption}
+
+\begin{assumption}[Conditional common trends]\label{ass:4}
+Almost surely, $E(Y(0)\mid G, T = 1, X) - E(Y(0)\mid G, T = 0, X)$ does not depend on $G$.
+\end{assumption}
+
+\begin{assumption}[Stable conditional treatment effects over time]\label{ass:5}
+Almost surely, $E(Y(1)-Y(0)\mid G, T = 1, D(0)=1, X) = E(Y(1)-Y(0)\mid G, T = 0, D(0)=1, X)$.
+\end{assumption}
+
+\setcounter{assumption}{3}
+\renewcommand{\theassumption}{\arabic{assumption}$'$X}
+\renewcommand{\theHassumption}{\arabic{assumption}primeX}
+\begin{assumption}[Conditional common trends within treatment status at the first date]\label{ass:4prime}
+Almost surely and for $d \in \{0,1\}$, $E(Y(d)\mid G, T = 1, D(0)=d, X) - E(Y(0)\mid G, T = 0, D(0)=d, X)$ does not depend on $G$.
+\end{assumption}
+
+\renewcommand{\theassumption}{\arabic{assumption}X}
+\renewcommand{\theHassumption}{\arabic{assumption}X}
+\setcounter{assumption}{6}
+
+\begin{assumption}[Monotonicity and conditional time invariance of unobservables]\label{ass:7x}
+$Y(d) = h_d(U_d,T,X)$, with $U_d \in \mathbb{R}$ and $h_d(u,t,x)$ strictly increasing in $u$ for all $(d,t,x) \in \mathcal{S}((D,T,X))$. Moreover, $U_d \perp\!\!\!\perp T \mid G, D(0), X$.
+\end{assumption}
+
+\begin{assumption}[Data restrictions]\label{ass:8x}
+\begin{enumerate}
+\item $\mathcal{S}(Y_{dgt}\mid X=x) = \mathcal{S}(Y)$ for all $(d,g,t,x) \in \mathcal{S}((D,G,T,X))$ and $\mathcal{S}(Y)$ is a closed interval of $\mathbb{R}$.
+\item $F_{Y_{dgt}\mid X=x}$ is strictly increasing on $\mathbb{R}$ and continuous on $\mathcal{S}(Y)$, for all $(d,g,t,x) \in \mathcal{S}((D,G,T,X))$.
+\item $\mathcal{S}(X_{dgt}) = \mathcal{S}(X)$ for all $(d,g,t) \in \mathcal{S}((D,G,T))$.
+\end{enumerate}
+\end{assumption}
+
+For the mean-effect identification results used in the main text, the supplement invokes Assumptions~\ref{ass:1}--\ref{ass:5} together with the third point of Assumption~\ref{ass:8x} for the Wald-DID estimand, and Assumptions~\ref{ass:1}--\ref{ass:3}, \ref{ass:4prime}, and the third point of Assumption~\ref{ass:8x} for the time-corrected estimand. Assumption~\ref{ass:7x} and the first two points of Assumption~\ref{ass:8x} are used in the supplement's CIC and quantile results.
+
+\subsection{Identification Result}\label{sec:app_cdh_thm}
+
+\paragraph{Theorem S4 of \citet{fuzzy2018} Supplement, Section~1.4.}\label{thm:cdh_s4}
+For any random variable $R$, let $DID_R(X)=E(R_{11}\mid X)-E(R_{10}\mid X)-\bigl(E(R_{01}\mid X)-E(R_{00}\mid X)\bigr)$. We also let $\delta_d(x)=E(Y_{d01}\mid X=x)-E(Y_{d00}\mid X=x)$, $Q_{d,x}(y)=F^{-1}_{Y_{d01}\mid X=x}\circ F_{Y_{d00}\mid X=x}(y)$, and
+\[
+W^{DID}(X)=\frac{DID_Y(X)}{DID_D(X)}, \qquad
+W^{TC}(X)=\frac{E(Y_{11}\mid X)-E(Y_{10}+ \delta_{D_{10}}(X)\mid X)}{E(D_{11}\mid X)-E(D_{10}\mid X)},
+\]
+\[
+W^{CIC}(X)=\frac{E(Y_{11}\mid X)-E(Q_{D_{10},X}(Y_{10})\mid X)}{E(D_{11}\mid X)-E(D_{10}\mid X)}.
+\]
+Finally, let $\Delta(X)=E(Y_{11}(1)-Y_{11}(0)\mid S, X)$.
+
+\begin{quote}\itshape
+Assume that Assumptions 1X--3X hold. Then:
+\begin{enumerate}
+\item If Assumptions 4X--5X are satisfied, and if the third point of Assumption 8X holds, $W^{DID}(X)=\Delta(X)$ and
+\[
+W_X^{DID} \equiv \frac{E[DID_Y(X)\mid G = 1, T = 1]}{E[DID_D(X)\mid G = 1, T = 1]} = \Delta.
+\]
+\item If Assumption 4'X is satisfied, and if the third point of Assumption 8X holds, $W^{TC}(X)=\Delta(X)$ and
+\[
+W_X^{TC} \equiv \frac{E(Y_{11}) - E[E(Y_{10} + D_{10}\delta_1(X) + (1-D_{10})\delta_0(X)\mid X)\mid G = 1, T = 1]}{E(D_{11}) - E(E(D_{10}\mid X)\mid G = 1, T = 1)} = \Delta.
+\]
+\item If Assumptions 7X--8X are satisfied, $W^{CIC}(X)=\Delta(X)$ and
+\[
+W_X^{CIC} \equiv \frac{E(Y_{11}) - E[E(D_{10}Q_{1,X}(Y_{10}) + (1-D_{10})Q_{0,X}(Y_{10})\mid X)\mid G = 1, T = 1]}{E(D_{11}) - E(E(D_{10}\mid X)\mid G = 1, T = 1)} = \Delta.
+\]
+\end{enumerate}
+\end{quote}
+
+\subsection{Inference Result from the Supplement}
+
+\paragraph{Theorem S6 of \citet{fuzzy2018} Supplement, Section~5.7.}\label{thm:cdh_s6}
+\begin{quote}\itshape
+Assume that Assumption 3 is satisfied, that $G_s \neq \emptyset$, and that $G \perp\!\!\!\perp T$. Assume also that $\kappa_n \to \infty$ and $\kappa_n / \sqrt{n} \to 0$.
+\begin{enumerate}
+\item If $E(Y^2) < \infty$ and Assumptions 4 and 5 are satisfied,
+\[
+\sqrt{n}\bigl(\widehat{W}^{*}_{DID} - \Delta^*\bigr) \xrightarrow{L} N\bigl(0, V(\psi^{*}_{DID})\bigr),
+\]
+where $\psi^{*}_{DID}$ is defined in Equation~(65) in Subsection~5.7 below.
+\item If $E(Y^2) < \infty$ and Assumption 4' is satisfied,
+\[
+\sqrt{n}\bigl(\widehat{W}^{*}_{TC} - \Delta^*\bigr) \xrightarrow{L} N\bigl(0, V(\psi^{*}_{TC})\bigr),
+\]
+where $\psi^{*}_{TC}$ is defined in Equation~(66) in Subsection~5.7 below.
+\item If Assumptions 7, 8 and 12 are satisfied,
+\[
+\sqrt{n}\bigl(\widehat{W}^{*}_{CIC} - \Delta^*\bigr) \xrightarrow{L} N\bigl(0, V(\psi^{*}_{CIC})\bigr),
+\]
+where $\psi^{*}_{CIC}$ is defined in Equation~(67) in Subsection~5.7 below.
+\end{enumerate}
+\end{quote}
+
+\subsection{Efficient Influence Function and Its Equivalence with the DML Score}\label{sec:app_cdh_equiv}
+
+The efficient influence function for $W^{DID}$ derived in \cite{fuzzy2018} (Supplementary Data, p.~45, Equations 63--65) for the binary two-group case is
+\begin{equation}\label{eq:cdh_if}
+\psi^*_{DID,i} = \frac{1}{\bar{D}} \left[\frac{G_i T_i}{p_{11}} DID_\varepsilon - w_{10,i}\,(\varepsilon_i - m^\varepsilon_{10}) - w_{01,i}\,(\varepsilon_i - m^\varepsilon_{01}) + w_{00,i}\,(\varepsilon_i - m^\varepsilon_{00})\right]
+\end{equation}
+where $\bar{D} = E[DID_D(X) \mid G\!=\!1, T\!=\!1]$, $w_{gt,i} = \mathbf{1}_{[G_i=g,\,T_i=t]}\,\pi_{11}(X_i)/(\pi_{gt}(X_i)\,p_{11})$ are the Riesz representer weights from Proposition~\ref{prop:2}, $\varepsilon = Y - \Delta D$, $m^\varepsilon_{gt} = m^Y_{gt} - \Delta\, m^D_{gt}$, and $DID_\varepsilon = \varepsilon - m^\varepsilon_{10} - m^\varepsilon_{01} + m^\varepsilon_{00}$. The correction signs are $(-,-,+)$ for the $(1,0)$, $(0,1)$, $(0,0)$ cells, matching the DID structure.
+
+The DML score $\psi^{wald}_i$ from Section~\ref{sec:3c} and the CD'H score $\psi^*_{DID,i}$ satisfy
+$$\psi^*_{DID,i} = -\psi^{wald}_i \,/\, G^{wald}$$
+where $G^{wald} = \partial_\theta E[g^{wald}(W, \gamma, \theta)]\big|_{\theta = \Delta} = -E\!\left[\frac{GT}{p_{11}} DID_D(X)\right]$. The scalar $G^{wald}$ depends only on the population first stage and does not vary with the nuisance vector $\gamma$. Scaling by a constant preserves Neyman orthogonality ($\partial_\gamma E[\psi^*_{DID}] = -(1/G^{wald})\,\partial_\gamma E[\psi^{wald}] = 0$), so $\psi^*_{DID}$ inherits the orthogonality property established for $\psi^{wald}$ in Proposition~\ref{prop:3}.
+
+For variance estimation, the two normalizations are algebraically equivalent. The DML formula $\hat{V} = n^{-1}\sum (\psi^{wald}_i)^2 / (\hat{G}^{wald})^2$ equals $n^{-1}\sum (\psi^*_{DID,i})^2$, so both produce the same standard error.
+
+The same proportionality holds for the TC scores ($\psi^*_{TC,i} = -\psi^{tc}_i / G^{tc}$).

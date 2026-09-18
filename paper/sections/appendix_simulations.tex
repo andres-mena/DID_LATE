@@ -1,0 +1,20 @@
+\section{Simulations: Additional results}\label{sec:app_sim}
+
+\begin{table}[H]
+    \centering
+    \input{../output/tables/sim_main.tex}
+    \caption[Monte Carlo simulation: main results]{Monte Carlo simulation, $M = 1{,}000$ replications, true $\Delta = 1$, nonlinear DGP, Lasso on $p = 100$ covariates ($p_0 = 20$ signal, $80$ noise). DML estimators use $L = 5$-fold cross-fitting with the data-driven one-sided $\hat\alpha$-rule of Conjecture~\ref{cor:onesided} (Section~\ref{sec:4c}); TC cell propensities $\pi_{dgt}$ trimmed to $[0.01, 0.99]$. Bold marks the best performer per metric per panel. SE/SD is the ratio of the mean estimated standard error to the Monte Carlo standard deviation (1.000 indicates perfect calibration).}\label{tab:main_sim}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \input{../output/tables/sim_ml_comparison.tex}
+    \caption[DML estimators with alternative first-step methods]{DML estimators with alternative first-step methods. Lasso uses $p = 100$ covariates with $L_1$ regularization. Random Forest uses 500 trees with $\lfloor p/3 \rfloor$ variables per split. Neural Network uses a single hidden layer with 5 units and weight decay 0.01. Propensity scores estimated via logit-Lasso in all cases. $M = 1{,}000$ replications, $L = 5$-fold cross-fitting, data-driven trimming.}\label{tab:ml_comparison}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \small
+    \input{../output/tables/sim_trim_rule_summary.tex}
+    \caption[Data-driven trimming vs.\ Crump et al.\ (2009) symmetric rule]{Data-driven one-sided trimming versus the Crump et al.\ (2009) symmetric $[0.10, 0.90]$ rule. Monte Carlo bias, standard deviation, RMSE, and 95\% coverage for DML-Wald and DML-TC under each rule, pooled across $M = 1{,}000$ replications. Superscript $\hat\alpha$ denotes the paper's one-sided data-driven rule (Conjecture~\ref{cor:onesided}); superscript $s$ denotes symmetric $[0.10, 0.90]$ trimming. The last column reports the average share of observations dropped by each rule. The data-driven rule selects $\hat\alpha \approx 0.20$ at moderate $n$, trims more aggressively at the upper tail than the symmetric rule, and reduces RMSE at every sample size. DML-TC is largely insensitive to the rule.}\label{tab:trim_rule}
+\end{table}

@@ -1,0 +1,269 @@
+\section{Locally Robust Estimators}\label{sec:3}
+
+This section develops locally robust scores for the Wald-DID and time-corrected Wald estimands. I rewrite each target parameter as an unconditional moment restriction, $E[g(W,\gamma,\theta)]=0$, and use the first-step influence function approach of \citet{ichimura2022influence} within the locally robust framework of \citet{chernozhukov2022locally} to construct orthogonal scores. Each identifying moment is augmented with a correction term that removes the first-order effect of estimating the nuisance vector $\gamma$. The FSIF construction yields an orthogonal score whose correction term is a linear combination of first-step prediction errors:
+\[
+\psi(W,\gamma,\alpha,\theta)=g(W,\gamma,\theta)+\alpha(W)^\top\bigl(R-\gamma(X)\bigr),
+\]
+where $R$ collects the random variables whose conditional expectations define the nuisance components and $\alpha$ is the vector of Riesz representers. The derivations below show that the derived Riesz representers $\alpha$, when evaluated at their true value $\alpha_0$, satisfy the Neyman orthogonality condition of \citet{DDML2018}:
+\[
+\partial_\gamma E[\psi(W,\gamma,\alpha_0,\theta_0)]\big|_{\gamma=\gamma_0}=0.
+\]
+so first-step estimation errors affect the moment condition only through higher-order terms. The orthogonal scores derived below are proportional to the efficient influence functions in \citet{fuzzy2018}, so after normalization they imply the same semiparametric efficiency bound. I use the FSIF route because it delivers the explicit decomposition $\psi = g + \phi$ and the closed-form Riesz representers needed for cross-fitted GMM estimation and for the trimming analysis in Section~\ref{sec:4}.
+
+
+\subsection{Identifying Moment Functions}\label{sec:3a}
+
+I first restate the Wald-DID and time-corrected estimands in Equations~\eqref{eq:Wdid} and~\eqref{eq:Wtc} as unconditional moment restrictions. The purpose is to define a population moment functional with a clear zero at the target parameter. The ratios in Equations~\eqref{eq:Wdid} and~\eqref{eq:Wtc} identify $\Delta$ inside the treated-post cell, $(G,T)=(1,1)$. Moving the numerator to the left-hand side and averaging with the weight $GT/p_{11}$, where $p_{11}=\Pr(G=1,T=1)$, gives equivalent restrictions that equal zero at the true parameter. For the Wald-DID estimand,
+
+\begin{equation}\label{eq:3}
+    E\left[\frac{GT}{p_{11}}(DID_Y(X)-DID_D(X)\Delta)\right]=0
+\end{equation}
+For the TC estimand,
+ \begin{equation}\label{eq:4}
+    E\Bigl[\frac{GT}{p_{11}}\bigl(Y-m^Y_{10}(X)-m^D_{10}(X)\delta_1(X)-(1-m^D_{10}(X))\delta_0(X)-(D-m^D_{10}(X))\Delta\bigr)\Bigr]=0
+ \end{equation}
+
+This step is algebraic. It does not change the estimand or add an identifying assumption. It turns each conditional ratio into a population object that can be differentiated with respect to the first-step nuisance functions. The pointwise moment functions are
+\begin{equation}
+        \begin{aligned}\label{eq:5}
+            g^{wald}(W,\gamma^{wald},\theta) &= \frac{GT}{p_{11}}[(Y-m^Y_{10}(X)-m^Y_{01}(X)+m^Y_{00}(X)) \\
+                                                             &\quad - (D-m^D_{10}(X)-m^D_{01}(X)+m^D_{00}(X))\theta]
+        \end{aligned}
+    \end{equation}
+
+
+
+    \begin{equation}\label{eq:6}
+        \begin{aligned}
+            g^{tc}(W,\gamma^{tc},\theta) &= \frac{GT}{p_{11}}[(Y-m^Y_{10}(X)-\delta_1(X)m^D_{10}(X)-(1-m^D_{10}(X))\delta_0(X)) \\
+                                                             &\quad - (D-m^D_{10}(X))\theta]
+        \end{aligned}
+    \end{equation}
+where $\mu^Y_{dgt}(x)=E[Y \mid D=d, G=g, T=t, X=x]$ and $\delta_d(X)=\mu^Y_{d01}(X)-\mu^Y_{d00}(X)$. The nuisance vectors are $\gamma^{wald} = \{m^Y_{gt}, m^D_{gt}\}_{(g,t) \neq (1,1)}$ and $\gamma^{tc} = \{m^Y_{10}, m^D_{10}, \mu^Y_{d0t}\}_{d,t \in \{0,1\}}$.
+
+These pointwise moments induce the population functionals
+\[
+    \mathcal{M}^j(\gamma^j,\theta)
+    =
+    E\bigl[g^j(W,\gamma^j,\theta)\bigr],
+    \qquad j\in\{\text{wald},\text{tc}\}.
+\]
+At the true nuisance vector $\gamma^j_0=\gamma^j(F_0)$, the target parameter solves $\mathcal{M}^j(\gamma^j_0,\Delta)=0$. This functional is the object differentiated in Section~\ref{sec:3b}. Once it is explicit, the first-step influence function follows from the directional derivative of $\mathcal{M}^j$ in the directions of the nuisance functions estimated in the first step.
+
+\begin{proposition}\label{prop:1}
+At the true nuisance vectors, the pointwise moments in \eqref{eq:5} and \eqref{eq:6} generate the same zero restrictions as the centered estimands in \eqref{eq:Wdid} and \eqref{eq:Wtc}:
+\[
+    E[g^{wald}(W,\gamma^{wald}_0,\theta)]=0
+    \quad\Longleftrightarrow\quad
+    W^{DID}-\theta=0,
+\]
+and
+\[
+    E[g^{tc}(W,\gamma^{tc}_0,\theta)]=0
+    \quad\Longleftrightarrow\quad
+    W^{TC}-\theta=0.
+\]
+Therefore, under the corresponding identification assumptions, both moment functions identify the same target $\Delta$.
+\end{proposition}
+
+
+Proposition~\ref{prop:1} makes the population target for plug-in GMM explicit. Solving $E[g^j(W,\gamma^j_0,\theta)]=0$ is equivalent to solving $W^{DID}-\theta=0$ for the Wald-DID moment and $W^{TC}-\theta=0$ for the TC moment, so if the first-step estimates converge to $\gamma^j_0$, the sample analog of $\mathcal{M}^j(\hat\gamma^j,\theta)=0$ targets the same $\Delta$. But this population statement does not describe the leading error from estimating $\gamma^j$. The next remark isolates that error and shows the term the FSIF must cancel.
+
+\begin{remark}[Exact first-order bias of plug-in estimators]\label{cor:bias}
+Let $\hat\theta_{\text{plug-in}}$ denote the estimator that replaces the unknown nuisance functions in $g^j$ with first-step estimates $\hat\gamma^j$ and then solves the resulting sample moment condition. A first-order expansion around $(\gamma^j_0,\Delta)$ gives
+\begin{equation}\label{eq:plugin_bias_linearization}
+    \hat\theta_{\text{plug-in}} - \Delta
+    =
+    -\frac{1}{G^j}\frac{1}{n}\sum_{i=1}^n g^j(W_i,\gamma^j_0,\Delta)
+    -
+    \underbrace{\frac{\dot{\mathcal{M}}^j_{\gamma^j_0}[\hat\gamma^j-\gamma^j_0]}{G^j}}_{\text{first-order bias}}
+    + o_P(n^{-1/2}),
+\end{equation}
+where $G^j = \partial_\theta E[g^j(W,\gamma^j,\theta)]|_{\theta=\Delta}$ and $\dot{\mathcal{M}}^j_{\gamma^j_0}[h]$ is the Gateaux derivative of $\mathcal{M}^j(\gamma^j,\Delta)$ with respect to $\gamma^j$, evaluated at $\gamma^j_0$ in direction $h$. The second term is the leading bias from first-step estimation. It is the directional derivative of the identifying functional in the direction of the estimation error $\hat\gamma^j-\gamma^j_0$. Section~\ref{sec:3b} uses this derivative to construct the correction term $\phi^j$ that cancels the first-order channel at $\gamma^j_0$.
+\end{remark}
+
+
+\subsection{The First Step Influence Function}\label{sec:3b}
+
+Remark~\ref{cor:bias} shows why the plug-in approach falls short. Even when consistent, the leading error contains a first-order term from estimating $\gamma$, and with regularized first steps that term need not be small relative to the $n^{-1/2}$ sampling noise. The first-step influence function (FSIF) of \citet{ichimura2022influence} and \citet{chernozhukov2022locally} is designed to remove that term. I derive it by computing the Gateaux derivative of $E[g^j(W,\gamma^j(F_\tau),\theta)]$ along smooth contamination paths $F_\tau = (1-\tau)F_0 + \tau H$ and reading off the function $\phi^j$ that satisfies $\partial_\tau E[g^j]\big|_{\tau=0} = E[\phi^j]$. Because $g^j$ is linear in each component of $\gamma$, this Gateaux derivative reduces to a sum of $K_j$ component-wise corrections. The FSIF is
+\begin{equation}\label{eq:fsif_decomp}
+    \phi^{j}(W,\gamma^j,\alpha^j,\theta)
+    \;=\;
+    \sum_{k=1}^{K_j}
+    \underbrace{\alpha^{j}_k(W)}_{\text{Riesz representer}}\,
+    \underbrace{\bigl(R^{j}_k-\gamma^{j}_k(X)\bigr)}_{\text{prediction error}}.
+\end{equation}
+Each term multiplies a first-step prediction error by a weight that records how perturbations of that nuisance function shift the identifying moment. Together, these terms reconstruct the first-order error from Remark~\ref{cor:bias}.
+
+\paragraph{FSIF example} Consider one component of the Wald nuisance vector $\gamma^{wald} = \{m^Y_{gt}, m^D_{gt}\}_{(g,t)\neq(1,1)}$, namely $m^Y_{10}(X) = E[Y \mid G=1,T=0,X]$, the treated-group pre-period outcome regression. The object differentiated is the population moment $E[g^{wald}(W,\gamma^{wald},\theta)]$, viewed as a functional of $\gamma^{wald}$. Taking its Gateaux derivative with respect to a perturbation in the $m^Y_{10}$ component of $\gamma^{wald}$ produces the FSIF term, expressed in terms of the cell propensity $\pi_{gt}(X) = \Pr(G=g, T=t \mid X)$,
+\begin{equation}\label{eq:fsif_example}
+    \phi^{wald}_{m^Y_{10}}(W)
+    \;\equiv\; \alpha^{wald}_{m^Y_{10}}(W)\cdot\bigl(Y - m^Y_{10}(X)\bigr)
+    \;=\; -\underbrace{\frac{\mathbf{1}\{G=1,T=0\}\,\pi_{11}(X)}{\pi_{10}(X)\,p_{11}}}_{\alpha^{wald}_{m^Y_{10}}(W)\,:\;\text{Riesz representer}}
+    \,\cdot\,\underbrace{\bigl(Y - m^Y_{10}(X)\bigr)}_{\text{prediction error}}.
+\end{equation}
+This $\phi^{wald}_{m^Y_{10}}(W)$ is the $k$th term in the sum~\eqref{eq:fsif_decomp}, the one associated with $\gamma^{wald}_k = m^Y_{10}$. The indicator picks out observations actually in the $(G=1, T=0)$ cell, so only treated-group pre-period units contribute. The denominator $\pi_{10}(X) = \Pr(G=1, T=0 \mid X)$ is the conditional probability of being in that cell, and the ratio $\pi_{11}(X)/\pi_{10}(X)$ reweights those units so they speak to the target cell $(G=1, T=1)$. The remaining five Wald representers and the six TC representers follow the same template with their own cell indicators and propensity ratios. Appendix~\ref{sec:app_fsif} contains the full Gateaux-derivative computation, the closed forms of all $\alpha^j_k$, and the element-by-element expressions for $\phi^{wald}$ and $\phi^{tc}$.
+
+\begin{proposition}[Closed-form first-step influence functions]\label{prop:2}
+For $j\in\{\text{wald},\text{tc}\}$, let
+\[
+    \mathcal{M}^j(\gamma^j,\theta)
+    =
+    E\bigl[g^j(W,\gamma^j,\theta)\bigr]
+\]
+denote the population moment functional. The first-step influence function of $\mathcal{M}^j$ with respect to the nuisance vector $\gamma^j$ is
+\[
+    \phi^{j}(W,\gamma^j,\alpha^j,\theta)
+    =
+    \sum_{k=1}^{K_j}
+    \alpha^{j}_k(W)\bigl(R^{j}_k-\gamma^{j}_k(X)\bigr),
+\]
+where $R^j_k$ is the random variable whose conditional expectation defines $\gamma^j_k$, and $K_j$ indexes the component-wise corrections for score $j$. The closed-form Riesz representers $\alpha^j_k$ are given in Appendix~\ref{sec:app_fsif}, Equations~\eqref{eq:fsif_wald_alpha_app}--\eqref{eq:fsif_tc_alpha2_app}; the resulting element-by-element expressions for $\phi^{wald}$ and $\phi^{tc}$ are Equations~\eqref{eq:8_app}--\eqref{eq:9_app}.
+\end{proposition}
+
+Proposition~\ref{prop:2} gives the core objects used in the rest of the theory. The Riesz representers $\alpha^j_k$ are the weights that translate a perturbation in each first-step nuisance function into its effect on the population moment. The FSIFs $\phi^{wald}$ and $\phi^{tc}$ then collect these weighted prediction errors into the correction added to $g^j$. These objects make it possible to form the locally robust score, implement the cross-fitted estimators, and study the variance effects of the cell weights. I derive the closed forms in Appendix~\ref{sec:app_fsif}, which lists all Wald and TC representers and the element-by-element formulas for $\phi^{wald}$ and $\phi^{tc}$.
+
+\paragraph{Additional nuisance functions.} The FSIF correction is not free. The original moment $g^j$ requires only the conditional means in $\gamma^j$. The augmented score $\psi^j$ also requires additional cell propensities, $\pi_{gt}(X)$ for Wald-DID and $\pi_{dgt}(X)$ for TC, because they enter the Riesz representers in the denominator. These propensities must be estimated, typically by cross-fitted logit or random forest, so small estimated cell probabilities translate into large weights and high variance.
+
+This variance problem is concentrated in the control-group cells. For treated-group cells, the relevant propensity ratio is constant in $X$. For control-group cells, the ratio is proportional to $e(X)/(1-e(X))$, where $e(X)=\Pr(G=1\mid X)$, so it grows large as $e(X)$ approaches one. TC tempers this problem by conditioning further on $D$, but it also requires more propensities to be estimated. Section~\ref{sec:4} addresses the resulting variance inflation with a trimming rule that removes observations with very high $\hat e(X)$ before averaging.
+
+
+\subsection{Local Robustness and Orthogonality}\label{sec:3c}
+
+Using the FSIF from Proposition~\ref{prop:2}, define the augmented score
+\begin{equation}\label{eq:orth_score}
+    \psi^{j}(W,\gamma^j,\alpha^j,\theta)
+    \;=\;
+    g^{j}(W,\gamma^j,\theta)
+    +
+    \phi^{j}(W,\gamma^j,\alpha^j,\theta).
+\end{equation}
+This subsection shows that the augmentation leaves the identifying restriction unchanged and removes the first-order sensitivity of the score to nuisance-estimation error. Proposition~\ref{prop:3} collects these two facts.
+
+\paragraph{Mean-zero correction.} For $j \in \{\text{wald},\text{tc}\}$,
+\begin{equation}\label{eq:fsif_meanzero}
+    E\bigl[\phi^j(W,\gamma^j_0,\alpha^j,\theta)\bigr] = 0
+    \quad \text{for every admissible $\alpha^j$ and every $\theta$.}
+\end{equation}
+Each Riesz representer contains a cell indicator, so observations outside the relevant cell drop out. Inside the cell, the residual is the prediction error from the nuisance regression that defines that component, so its conditional mean is zero by construction. Appendix~\ref{sec:app_proof_prop3} gives the formal computation.
+
+Equation~\eqref{eq:fsif_meanzero} implies that the augmented score and the original identifying moment have the same expectation at the truth:
+\begin{equation}\label{eq:psi_eq_g}
+    E\bigl[\psi^j(W,\gamma^j_0,\alpha^j,\theta)\bigr]
+    \;=\;
+    E\bigl[g^j(W,\gamma^j_0,\theta)\bigr].
+\end{equation}
+So the FSIF correction does not change the target parameter and does not add new identifying restrictions. A GMM estimator built from $\psi^j$ still targets the same $\Delta$ as one built from $g^j$.
+
+\paragraph{Neyman orthogonality.} The second property is that the Gateaux derivative of $E[\psi^j]$ with respect to $\gamma^j$ vanishes at $\gamma^j_0$:
+\begin{equation}\label{eq:neyman_orth}
+    \frac{\partial}{\partial \tau}
+    E\bigl[\psi^j(W,\gamma^j_0 + \tau\delta,\alpha^j_0,\theta)\bigr]
+    \bigg|_{\tau=0}
+    \;=\; 0
+\end{equation}
+for every admissible direction $\delta$. Small perturbations of $\gamma^j$ around the truth therefore have no first-order effect on the expected score. This is exactly the first-order plug-in bias in Equation~\eqref{eq:plugin_bias_linearization}, and the FSIF correction is constructed to remove it. Appendix~\ref{sec:app_proof_prop3} provides the component-wise verification.
+
+\begin{proposition}[Local robustness of $\psi^{wald}$ and $\psi^{tc}$]\label{prop:3}
+For $j \in \{\text{wald},\text{tc}\}$ and any $\theta \in \Theta$, the augmented score $\psi^j = g^j + \phi^j$ satisfies
+\begin{enumerate}
+\item \textit{Mean-zero correction.} $E[\phi^j(W,\gamma^j_0,\alpha,\theta)] = 0$ for every admissible $\alpha$, so $E[\psi^j(W,\gamma^j_0,\alpha,\theta)] = E[g^j(W,\gamma^j_0,\theta)]$.
+\item \textit{Neyman orthogonality.} $\partial_\tau\, E[\psi^j(W,\gamma^j_0 + \tau\delta,\alpha^j_0,\theta)]|_{\tau=0} = 0$ for every admissible direction $\delta$.
+\end{enumerate}
+See Appendix~\ref{sec:app_proof_prop3} for the component-wise proof.
+\end{proposition}
+
+Proposition~\ref{prop:3} has two claims. First, the correction term $\phi^j$ has mean zero when the nuisance vector $\gamma^j$ is evaluated at the truth. Therefore adding $\phi^j$ to $g^j$ does not change the identifying restriction. Second, the expected augmented score is flat, to first order, with respect to small perturbations of $\gamma^j$ around $\gamma^j_0$. Together, these cancellations are the local-robustness condition in \citet[Equation~4.1]{chernozhukov2022locally}. The FSIF decomposition of \citet[Equation~2.6]{ichimura2022influence} supplies the correction term $\phi^j$ that makes the cancellation possible.
+
+\begin{remark}[Intuition for local robustness]\label{rmk:local_vs_double}
+Local robustness means that the moment condition is protected against small first-step mistakes around the true nuisance functions. The plug-in moment $g^j(W,\hat\gamma^j,\theta)$ inherits the first-order error from estimating $\gamma^j$. The augmented score $\psi^j=g^j+\phi^j$ removes that first-order channel. The correction $\phi^j$ is built so that, at the truth, it averages to zero and offsets the first-order change in $E[g^j]$ caused by perturbing $\gamma^j$.
+
+This is the sense in which the correction makes DDML stable. The estimator still uses estimated nuisance functions, but small errors in those first steps do not enter the final moment directly. They enter only through higher-order terms left after the first-order cancellation. Thus the role of $\phi^j$ is not to change the target parameter. Its role is to make the estimating equation less sensitive to the nuisance estimates used to construct it.
+\end{remark}
+
+\subsection{Locally Robust GMM Estimators}\label{sec:3d}
+The locally robust score $\psi^j = g^j + \phi^j$ constructed in Section~\ref{sec:3c} can now be turned into a point estimator via cross-fitted GMM. To estimate the Local Average Treatment Effect (LATE) $\Delta$, I employ a Generalized Method of Moments (GMM) approach \citep{hansen1982large, newey1994large} that incorporates cross-fitting in the first step. This adjustment, inspired by \cite{DDML2018}, aims to relax the Donsker conditions and mitigate own-observation bias. Cross-fitting involves partitioning $\{1,\ldots,n\}$ into $L$ disjoint subsets $I_1,\ldots,I_L$ of size $n/L$. Then, I estimate functions $\hat{\gamma}_l$ and $\hat{\alpha}_l$ using observations outside fold $l$. Subsequently, I plug in estimated nuisance parameters into the identifying moment function $\hat{g}(W_i, \hat{\gamma}_l, \theta)$ and their respective influence function $\hat{\phi}(W_i, \hat{\gamma}_l, \hat{\alpha}_l, \theta)$  to construct a debiased sample moment function $\hat{\psi}(\theta)_{il}$ as follows:
+
+\[
+\hat{\psi}(\theta)_{il} = \hat{g}(W_i, \hat{\gamma}_l, \theta) + \hat{\phi}(W_i, \hat{\gamma}_l, \hat{\alpha}_l, \theta)
+\]
+
+The GMM estimator of the LATE is derived by minimizing the quadratic form of the sum of the debiased sample moment functions. Consequently, the proposed estimators, DML-Wald and DML-TC, are the sample analogs of the orthogonal moment condition $E[\psi^j(W, \gamma_0, \alpha_0, \theta_0)] = 0$, and are given by Equations~\ref{eq:13} and~\ref{eq:14}:
+
+
+\begin{equation}\label{eq:13}
+    \widehat{DML}^{wald} = \underset{\theta \in \Theta}{\text{argmin}} \; \bigg[\frac{1}{n}\sum^L_{l=1} \sum_{i\in I_l} \hat{\psi}^{wald}_{il}\bigg]^2
+    \end{equation}
+
+    \begin{equation}\label{eq:14}
+    \widehat{DML}^{tc} = \underset{\theta \in \Theta}{\text{argmin}} \; \bigg[\frac{1}{n}\sum^L_{l=1} \sum_{i\in I_l} \hat{\psi}^{tc}_{il}\bigg]^2
+    \end{equation}
+
+Because the orthogonal scores are affine in $\theta$, the cross-fitted GMM criterion can be solved by the corresponding closed-form root once the nuisance functions are fixed.
+
+Relative to naive plug-in estimators, DML-Wald and DML-TC learn nuisance functions on auxiliary folds and evaluate the score out of sample. The FSIF correction then removes the leading first-step bias, so the root is built from locally robust, cross-fitted moments rather than raw plug-in conditional means. The main practical issue is instability in the Riesz-weighted components when estimated cell propensities are small. Section~\ref{sec:4} addresses this with one-sided trimming.
+
+\subsection{Asymptotic Properties}\label{sec:3e}
+
+The main result of this section is Theorem~\ref{thm:1} which states that the $\widehat{DML}^{wald}$ and $\widehat{DML}^{tc}$ estimators achieve $\sqrt{n}$-consistency and asymptotic normality as long as the first-step estimators converge at rates faster than $n^{-1/4}$. Under standard regularity conditions on the nuisance parameters, this rate of convergence can be achieved by many machine learning methods including Lasso, logit-Lasso, random forests, and neural networks.
+
+Let $\eta^{gt} = (m^Y_{gt}, m^D_{gt}, \pi_{gt})$ collect all nuisance functions for cell $(g,t)$. Let $\rho^R_{gt}=R-m^R_{gt}(x)$ be the residual of the nuisance function $m^R_{gt}(x)$ such that $E_{F}[\rho^R_{gt}|G=g, T=t, X]=0$, and $\eta^{gt}_0=(m^Y_{gt}(X),m^D_{gt}(X),\pi_{gt}(X))$ be the nuisance functions evaluated at $G=g,T=t$ and $F_0$. Let $c, C$ and $q$ be fixed strictly positive constants such that $q>2$. Consider also the sequences $\epsilon_n, P_n$ converging to $0$ such that $\epsilon_n = o(n^{-1/4})$, which implies $(\epsilon_n)^2 = o(n^{-1/2})$. Moreover, for any $\eta^{gt}=(l^{Y}_{gt}, l^{D}_{gt}, l^{\pi}_{{gt}})$ where $l^{Y}_{gt}$ is a function mapping from $(G,T,X)$ to $\mathbb{R}$ and $l^{D}_{gt}, l^{\pi}_{{gt}}$ are functions mapping from $(G,T,X)$ to $(\varepsilon, 1-\varepsilon)$ for some $\varepsilon \in (0,1/2)$ denote $\| \eta^{gt} \|_{F,q} = \max \{ \| l^Y_{gt} \|_{F,q}, \| l^D_{gt} \|_{F,q}, \| l^{\pi}_{gt} \|_{F,q} \}
+$\\
+
+\noindent
+\textbf{Regularity Conditions.} {\itshape Let $F$ be any CDF of the random vector $W=(Y,D,G,T,X)$, then:
+\begin{enumerate}
+    \item[1.] (Bounded outcomes) \( \| Y \|_{F,q} \leq C \)
+    \item[2.] (Overlap) \( \Pr_F(\varepsilon \leq e(X) \leq 1-\varepsilon) = 1 \), where $e(X) = \Pr(G=1 \mid X)$
+    \item[3.] (Relevant first stage) \( |G^j| = |\partial_\theta E[g^j(W,\gamma^j,\theta)]\big|_{\theta=\Delta}| \geq c \)
+    \item[4.] (Bounded conditional variance) \( \| E_F[(\rho^Y_{gt})^2|X] \|_{F,\infty} \leq C \)
+    \item[5.] (First-step quality) Given a random subset \( I \) of \( [n] \) of size \( n_l = |I| \), the nuisance function estimator \( \hat{\eta}^{gt}(W_{i \in I}) \) obeys with probability at least \( 1-P_n \):
+    \begin{enumerate}
+        \item[(a)] (Bounded estimates) \( \| \hat{\eta}^{gt} - \eta^{gt} \|_{F,q} \leq C \)
+        \item[(b)] (Consistency) \( \| \hat{\eta}^{gt} - \eta^{gt} \|_{F,2} \leq \epsilon_n \)
+        \item[(c)] (Estimated overlap) \( \| \hat{\pi}^{gt} - 1/2 \|_{F,\infty} \leq 1/2 - \varepsilon \)
+        \item[(d)] (Product rate) \( \| \hat{\pi}_{gt} - \pi_{gt} \|_{F,2} \cdot \| \hat{m}^{R}_{gt} - m^{R}_{gt} \|_{F,2} = o_P(n^{-1/2}) \) for $R\in\{Y,D\}$ and $(g,t)\neq(1,1)$
+        \item[(d')] (TC product rate) \( \| \hat{\delta}_d - \delta_d \|_{F,2} \cdot \| \hat{m}^D_{10} - m^D_{10} \|_{F,2} = o_P(n^{-1/2}) \) for $d \in \{0,1\}$
+    \end{enumerate}
+\end{enumerate}
+
+}
+\medskip
+Conditions 1--4 impose standard regularity on the outcome distribution, overlap, first-stage relevance, and conditional variances. The key requirement is Condition 5(d), the product rate. It asks that the propensity score estimation error and the conditional expectation estimation error, multiplied together, vanish faster than $n^{-1/2}$. A sufficient condition is that each first-step estimator converges faster than $n^{-1/4}$. Asymmetric rates also work. If the propensity score converges at rate $n^{-a}$ and the conditional expectation at rate $n^{-b}$, the requirement is $a + b > 1/2$. This is Condition 3.4(c) in \cite{DDML2018} and Assumption 3.1(f) in \cite{chang2020double}, and is achieved by Lasso under approximate sparsity and by random forests under smoothness assumptions.
+\medskip
+
+\begin{theorem}[$\sqrt{n}$-consistency and asymptotic normality]\label{thm:1}
+Suppose Assumptions~\ref{ass:1}--\ref{ass:3} and Regularity Conditions 1--5 hold. Let $\widehat{DML}^{wald}$ and $\widehat{DML}^{tc}$ be the cross-fitted estimators defined in~\eqref{eq:13}--\eqref{eq:14} with $L$ folds.
+\begin{enumerate}
+    \item[\textup{(i)}] Under Assumptions~\ref{ass:4}--\ref{ass:5} and the third point of Assumption~\ref{ass:8x},
+    $\;\sqrt{n}\,(\widehat{DML}^{wald}-\Delta) \xrightarrow{d} \mathcal{N}(0,\, V^{wald})$.
+    \item[\textup{(ii)}] Under Assumption~\ref{ass:4prime} and the third point of Assumption~\ref{ass:8x},
+    $\;\sqrt{n}\,(\widehat{DML}^{tc}-\Delta) \xrightarrow{d} \mathcal{N}(0,\, V^{tc})$.
+\end{enumerate}
+The asymptotic variance is $V^{j}=[G^{j}]^{-2}\,E[(\psi^{j})^2]$, where $G^{j}=\partial_\theta E[g^j(W, \gamma^j,\theta)]\big|_{\theta=\Delta}$ for $j\in\{\textup{wald}, \textup{tc}\}$.
+\end{theorem}
+
+\paragraph{Inference.} A consistent variance estimator is
+\begin{equation*}
+    \hat{V}^j = \frac{1}{n}\sum_{l=1}^{L} \sum_{i\in I_l} (\hat{\psi}_{il}^{j})^2 \;\Big/\; \left(\hat{G}^j\right)^2
+\end{equation*}
+where $\hat{G}^j = \partial_\theta \hat{g}^j(\theta)\big|_{\theta = \widehat{DML}^j}$ and $\hat{g}^j(\theta) = n^{-1}\sum_{l=1}^{L} \sum_{i\in I_l}g^j(W_i, \hat{\gamma}^j_l, \theta)$. Confidence intervals follow from the normal approximation.
+
+\begin{proposition}[Semiparametric efficiency]\label{prop:4}
+Let $\psi^{*}_{DID}$ and $\psi^{*}_{TC}$ denote the efficient influence functions for the Wald-DID and TC estimands derived in \citet[Supplementary Data, p.~45]{fuzzy2018} and reproduced in Appendix~\ref{sec:app_cdh_equiv}. Under Assumptions~\ref{ass:1}--\ref{ass:3} and the relevant additional assumption for each estimand (Assumptions~\ref{ass:4}--\ref{ass:5} and the third point of Assumption~\ref{ass:8x} for DML-Wald; Assumption~\ref{ass:4prime} and the third point of Assumption~\ref{ass:8x} for DML-TC), the orthogonal scores satisfy
+\[
+    \psi^{wald}(W,\gamma^{wald}_0,\alpha^{wald}_0,\Delta) \;=\; -G^{wald}\cdot\psi^{*}_{DID}(W), \qquad
+    \psi^{tc}(W,\gamma^{tc}_0,\alpha^{tc}_0,\Delta) \;=\; -G^{tc}\cdot\psi^{*}_{TC}(W),
+\]
+where $G^{j}=\partial_\theta E[g^j(W,\gamma^j,\theta)]\big|_{\theta=\Delta}$ is the population first-stage Jacobian, so $-G^j$ is the positive first-stage normalization. Consequently the asymptotic variance in Theorem~\ref{thm:1} equals the semiparametric efficiency bound for $\Delta$ in the fuzzy DID model of \citet{fuzzy2018}, and the DML-Wald and DML-TC estimators are semiparametrically efficient.
+\end{proposition}
+
+Proposition~\ref{prop:4} is proved in Appendix~\ref{sec:app_proofs_prop4} by term-by-term matching of the DML score against the CD'H efficient IF, with the proportionality constant $-G^j$ fixed by the ratio of normalizations. Scaling an orthogonal score by a constant preserves Neyman orthogonality and the asymptotic variance, so the DML variance formula $\hat{V}^j$ above coincides with $n^{-1}\sum_i(\psi^{*}_{j,i})^2$ and delivers the semiparametric efficiency bound of \citet{hahn1998} and \citet{newey1994asymptotic}.
+
+\begin{remark}[Cluster dependence]\label{rem:cluster}
+Theorem~\ref{thm:1} assumes i.i.d.\ sampling. Under cluster structure (panel data, or repeated cross-sections with cluster-level treatment as in Section~\ref{sec:6}), both the score linearisation and the variance estimator have to accommodate within-cluster dependence, and two complementary routes deliver valid $\sqrt{C}$-inference. \citet{chiang2022multiway} cross-fit at the cluster level, so $\hat{\gamma}_l$ remains independent of $I_l$ and the $C^*$ term vanishes under a product-rate condition that binds on $C^{-1/4}$. \citet{belloni2017program} instead keep observation-level estimation and rely on Neyman orthogonality plus a cluster-level $L_2$ product-rate condition to drive the linearisation remainder to zero, with the cluster-robust variance
+\[
+    \widehat{V}^{j}_{\text{clust}} = C^{-2}\sum_{c=1}^{C}\Bigl(\sum_{i\in c}\hat{\psi}^{j}_{i}\Bigr)^{\!2}\,\Big/\,\bigl(\hat{G}^{j}\bigr)^{\!2}
+\]
+absorbing the residual within-cluster score dependence. In finite samples cluster folds can collapse the first step when within-cluster covariate variation is thin and the nuisance dictionary has dimension close to $C$, because holding out an entire cluster leaves Lasso with no identifying variation in the held-out block. The empirical application in Section~\ref{sec:6} uses observation-level folds together with $\widehat{V}^{j}_{\text{clust}}$, following the \citet{belloni2017program} route.
+\end{remark}

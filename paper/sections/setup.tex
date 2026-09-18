@@ -1,0 +1,40 @@
+\section{Setup and Identification}\label{sec:2}
+
+Let $W_i = (Y_i, D_i, G_i, T_i, X_i)$, $i = 1,\ldots,n$, be i.i.d.\ observations from a repeated cross-section. The outcome is $Y$, the binary treatment is $D$, the group assignment is $G \in \{0,1\}$, the time period is $T \in \{0,1\}$, and $X$ is a possibly high-dimensional vector of covariates. Potential outcomes are $Y(1)$ and $Y(0)$, with $Y = DY(1) + (1-D)Y(0)$. The design is \emph{fuzzy} because $D \neq GT$. Some treatment-group units remain untreated, and some control-group units take the treatment. Let $S = \{D_0 < D_1, G=1\}$ denote the \emph{switchers}, treatment-group units who are untreated at $T=0$ and treated at $T=1$. The parameter of interest is the LATE for these switchers,
+\[
+    \Delta = E[Y(1) - Y(0) \mid G=1, T=1, S=1].
+\]
+
+I follow the identification framework of \citet{fuzzy2018} and begin with the general assumptions shared by both estimands. Assumptions~\ref{ass:1}--\ref{ass:3} in Appendix~\ref{sec:app_setup} define the fuzzy DID environment. Assumption~\ref{ass:1} (Conditional Fuzzy Design) requires treatment take-up to rise more in the treatment group than in the control group. Assumption~\ref{ass:2} (Stable conditional percentage of treated units in the control group) keeps the control-group treatment share fixed over time within $X$ cells. Assumption~\ref{ass:3} (Treatment participation equation) is a monotonicity-type restriction indicating that conditional on $X$, units can switch treatment in only one direction within each group. Appendix~\ref{sec:app_setup} also reproduces the additional covariate assumptions used in the supplement's identification results.
+
+
+\subsection{Estimands}\label{sec:2b}
+
+For any random variable $R$, let $m^R_{gt}(x) = E[R \mid G=g, T=t, X=x]$ and $DID_R(X) = R - m^R_{10}(X) - m^R_{01}(X) + m^R_{00}(X)$.
+
+Assumptions~\ref{ass:1}--\ref{ass:3} define the fuzzy DID environment. The Wald ratio identifies the treatment-group switcher LATE $\Delta$ once we add three conditions. Assumption~\ref{ass:4} imposes conditional common trends in untreated potential outcomes across the treatment and control groups. Assumption~\ref{ass:5} requires treatment effects to be stable over time within cells defined by baseline treatment status. The third point of Assumption~\ref{ass:8x} requires common covariate support across cells, so these conditional comparisons can be aggregated to recover $\Delta$. Under these conditions,
+\begin{equation}\label{eq:Wdid}
+    W^{DID} \equiv \frac{E[DID_Y(X)\mid G=1, T=1]}{E[DID_D(X)\mid G=1, T=1]} = \Delta.
+\end{equation}
+The numerator is the covariate-adjusted DID in outcomes, and the denominator is the corresponding DID in treatment take-up, both evaluated in the treated-post cell.
+
+For the time-corrected estimand, let $\delta_d(X) = E[Y \mid D=d, G=0, T=1, X] - E[Y \mid D=d, G=0, T=0, X]$ denote the control-group time trend in $Y$ within baseline treatment-status cell $d$.
+
+The time-corrected estimand replaces Assumptions~\ref{ass:4}--\ref{ass:5} with Assumption~\ref{ass:4prime}, which imposes conditional common trends within baseline treatment-status cells. Together with Assumptions~\ref{ass:1}--\ref{ass:3} and the third point of Assumption~\ref{ass:8x}, it identifies the same treatment-group switcher LATE $\Delta$:
+\begin{equation}\label{eq:Wtc}
+    W^{TC} \equiv \frac{E[Y - m^Y_{10}(X) - m^D_{10}(X)\delta_1(X) - (1-m^D_{10}(X))\delta_0(X)\mid G=1, T=1]}{E[D - m^D_{10}(X)\mid G=1, T=1]} = \Delta.
+\end{equation}
+The TC numerator subtracts a counterfactual outcome that combines two control-group time trends: $\delta_1(X)$ for units with baseline treatment status $D(0)=1$ and $\delta_0(X)$ for units with $D(0)=0$, weighted by the baseline treated share $m^D_{10}(X)$. The denominator is the corresponding adjusted change in treatment take-up.
+
+\subsection{Plug-in Estimators}\label{sec:2c}
+
+Given first-step estimates $\hat{m}^R_{gt}$ and $\hat{\delta}_d$, the plug-in estimators $\widehat{Wald}_X$ and $\widehat{TC}_X$ replace each unknown conditional expectation with its estimated counterpart:
+\begin{equation*}
+    \widehat{Wald}_X = \frac{\frac{1}{n_{11}} \sum_{i \in I_{11}}[Y_i - \hat{m}^Y_{10}(X_i) - \hat{m}^Y_{01}(X_i) + \hat{m}^Y_{00}(X_i)]}{\frac{1}{n_{11}} \sum_{i \in I_{11}}[D_i - \hat{m}^D_{10}(X_i) - \hat{m}^D_{01}(X_i) + \hat{m}^D_{00}(X_i)]}
+\end{equation*}
+\begin{equation*}
+    \widehat{TC}_X = \frac{\frac{1}{n_{11}} \sum_{i \in I_{11}}[Y_i - \hat{m}^Y_{10}(X_i) - \hat{m}^D_{10}(X_i)\hat{\delta}_1(X_i) - (1-\hat{m}^D_{10}(X_i))\hat{\delta}_0(X_i)]}{\frac{1}{n_{11}} \sum_{i \in I_{11}}[D_i - \hat{m}^D_{10}(X_i)]}
+\end{equation*}
+where $I_{11}=\{i: G_i=1, T_i=1\}$ and $n_{11}=|I_{11}|$.
+
+These estimators are consistent when $\hat\gamma$ converges to the true conditional means. But when $\hat\gamma$ comes from a regularized or model-selected first step, the plug-in estimators inherit first-step bias. Section~\ref{sec:3} constructs orthogonal scores that remove this bias and restore valid inference.
