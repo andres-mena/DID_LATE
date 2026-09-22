@@ -18,17 +18,13 @@ Use this repository to read and build the paper. Use the `didml` repository to i
 
 ## Current Status
 
-This is a coauthor-ready working repository, not a finished submission package.
-
-The core econometric objects are in good shape:
-
 - The fuzzy DID setup follows de Chaisemartin and D'Haultfoeuille (2018).
 - The Wald-DID and time-corrected estimands are written as unconditional moment restrictions.
 - Closed-form first-step influence function corrections produce Neyman-orthogonal scores.
 - Cross-fitted GMM estimators, DML-Wald and DML-TC, are implemented in the separate `didml` package.
 - The paper source compiles from this repository with frozen tables and figures.
 
-My read on the state of the project:
+AI evaluation of the project:
 
 - Theory: satisfactory enough for detailed coauthor review. The orthogonal-score construction, equivalence to the CDH efficient influence functions, and rate statement are the backbone.
 - Simulations: useful and directionally reassuring, but still need a final audit of which DGPs belong in the paper.
@@ -46,14 +42,13 @@ My read on the state of the project:
 
 ## Open Questions
 
-The main questions for a coauthor are conceptual rather than mechanical:
-
-- Positioning: should the paper sell itself primarily as fuzzy DID with ML, as a LATE paper, or as a general recipe for orthogonalizing ratio DID estimands?
-- Trimming: the one-sided rule is empirically useful, but the current formal statement still has a conjectural flavor for the estimated trimming measure.
-- TC versus Wald: DML-TC is often the more stable operational estimator when the first stage is weak. The paper should decide how strongly to recommend it.
-- Empirical application: INPRES is clean and canonical, but we should decide whether it is enough for the main text or whether another application would better display high-dimensional covariates.
+- Positioning: should the paper sell itself primarily an the DML extension of CDH2017, or extend it as a general DID-LATE paper?. More boradly, can it also be seen as a general recipe for orthogonalizing ratio estimands?
+- Trimming: the one-sided rule is empirically useful, but the current formal statement still has a conjectural flavor for the estimated trimming measure. Need more theory on that or even removing it completely to make the main argument more clear.
+- TC versus Wald: DML-TC is often the more stable operational estimator when the first stage is weak. However, the identification assumptions are contestable and the explanability of the estimand it's too obscure. The paper should decide how strongly to recommend it.
+- Empirical application: INPRES is clean and canonical in Dufflo and CDH2017, works fine to make an argument for the TC estimator but we should decide whether it is good for high-dimensional covariates which is the main contribution of this estimator.
 - Multi-period extension: the package interface anticipates it, but the paper currently focuses on the 2x2 case.
-- Cluster dependence: the paper states a practical route using observation-level folds plus clustered score variance. A full cluster-cross-fitting theorem could be a follow-up or appendix extension.
+- Panel Data: the current version covers repeated cross section only
+- Cluster dependence: the paper currently introduce a basic correction into the variance estimator accounting for cluster dependance, but no guide for sampling during cross-fitting is implemented. It's a problem that deserves carefull attention.
 
 ## Notation
 
@@ -87,12 +82,14 @@ W^DID = E[DID_Y(X) | G = 1, T = 1] /
         E[DID_D(X) | G = 1, T = 1].
 ```
 
-The time-corrected target uses control-group trends by baseline treatment status:
+The time-corrected target, let $\delta_d(X) = E[Y \mid D=d, G=0, T=1, X] - E[Y \mid D=d, G=0, T=0, X]$ be the trend in the G=0 group, for each for the treatment status D=d:
 
 ```text
-delta_d(X) = E[Y | D = d, G = 0, T = 1, X]
-           - E[Y | D = d, G = 0, T = 0, X].
+W^TC= E[Y - m^Y_{10}(X) - m^D_{10}(X)\delta_1(X) - (1-m^D_{10}(X))\delta_0(X)\mid G=1, T=1]/
+E[D - m^D_{10}(X)\mid G=1, T=1]
 ```
+The TC numerator subtracts a counterfactual outcome that combines two control-group time trends: $\delta_1(X)$ for units with baseline treatment status $D(0)=1$ and $\delta_0(X)$ for units with $D(0)=0$, weighted by the baseline treated share $m^D_{10}(X)$. The denominator is the corresponding adjusted change in treatment take-up.
+
 
 The orthogonal score has the form
 
