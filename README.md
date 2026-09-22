@@ -42,13 +42,13 @@ AI evaluation of the project:
 
 ## Open Questions
 
-- Positioning: should the paper sell itself primarily an the DML extension of CDH2017, or extend it as a general DID-LATE paper?. More boradly, can it also be seen as a general recipe for orthogonalizing ratio estimands?
-- Trimming: the one-sided rule is empirically useful, but the current formal statement still has a conjectural flavor for the estimated trimming measure. Need more theory on that or even removing it completely to make the main argument more clear.
-- TC versus Wald: DML-TC is often the more stable operational estimator when the first stage is weak. However, the identification assumptions are contestable and the explanability of the estimand it's too obscure. The paper should decide how strongly to recommend it.
-- Empirical application: INPRES is clean and canonical in Dufflo and CDH2017, works fine to make an argument for the TC estimator but we should decide whether it is good for high-dimensional covariates which is the main contribution of this estimator.
-- Multi-period extension: the package interface anticipates it, but the paper currently focuses on the 2x2 case.
-- Panel Data: the current version covers repeated cross section only
-- Cluster dependence: the paper currently introduce a basic correction into the variance estimator accounting for cluster dependance, but no guide for sampling during cross-fitting is implemented. It's a problem that deserves carefull attention.
+- **Positioning**: should the paper sell itself primarily an the DML extension of CDH2017, or extend it as a general DID-LATE paper?. More boradly, can it also be seen as a general recipe for orthogonalizing ratio estimands?
+- **Trimming**: the one-sided rule is empirically useful, but the current formal statement still has a conjectural flavor for the estimated trimming measure. Need more theory on that or even removing it completely to make the main argument more clear.
+- **TC vs Wald vs alternative**: DML-TC is often the more stable operational estimator when the first stage is weak. However, the identification assumptions are contestable and the explanability of the estimand it's too obscure. The paper should decide how strongly to recommend it.
+- **Empirical application**: INPRES is clean and canonical in Dufflo and CDH2017, works fine to make an argument for the TC estimator but we should decide whether it is good for high-dimensional covariates which is the main contribution of this estimator.
+- **Multi-period extension**: the package interface anticipates it, but the paper currently focuses on the 2x2 case.
+- **Panel Data**: the current version covers repeated cross section only
+- **Cluster dependence**: the paper currently introduce a basic correction into the variance estimator accounting for cluster dependance, but no guide for sampling during cross-fitting is implemented. It's a problem that deserves carefull attention.
 
 ## Notation
 
