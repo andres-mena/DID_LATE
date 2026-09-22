@@ -3,6 +3,10 @@
 This repository contains the paper source, frozen exhibits, and replication notes for:
 
 > Double Debiased Machine Learning for Difference-in-Differences under Imperfect Compliance
+> 
+> **Abstract:**
+This paper develops debiased machine learning estimators for difference-in-differences designs with imperfect compliance. I derive closed-form orthogonal scores for the Wald-DID and time-corrected estimands of Chaisemartin and D'Haultfoeuille (2018) and construct cross-fitted GMM estimators that are $\sqrt{n}$-consistent and asymptotically normal under standard rate conditions on the nuisance functions. I also propose a data-driven trimming rule that targets a sample analog of the estimator's asymptotic variance, excludes only observations whose probability of belonging to the treated group is close to one, and does not require knowledge of the treatment effect. Simulations suggest that the estimators achieve nominal coverage at moderate sample sizes. An application to the INPRES school construction program illustrates the method.
+
 
 The R package lives separately at:
 
